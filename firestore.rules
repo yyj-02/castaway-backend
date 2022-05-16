@@ -1,9 +1,26 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function validatePodcast() {
+      return request.resource.data.size() == 8
+        && request.resource.data.keys().hasAll(["title", "description", "path", "imgPath", "durationInMinutes", "artistId", "genres", "public"])
+        && request.resource.data.title is string && request.resource.data.title.trim() != ""
+        && request.resource.data.description is string && request.resource.data.description.trim() != ""
+        && request.resource.data.path is string && request.resource.data.path.trim() != ""
+        && request.resource.data.imgPath is string && request.resource.data.imgPath.trim() != ""
+        && request.resource.data.durationInMinutes is number
+        && request.resource.data.artistId is string && request.resource.data.artistId.trim() != ""
+        && request.resource.data.genres is list && request.resource.data.genres.size() > 0
+        && request.resource.data.public is bool;
+    }
+
     match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 4, 21);
+      allow read, write: if false;
+    }
+
+    match /podcasts/{podcast} {
+      allow read: if resource.data.public == true;
+      allow write: if validatePodcast();
     }
   }
 }

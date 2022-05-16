@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 import Podcast from "../services/podcast";
 
 const getAllPodcasts = async (req: Request, res: Response) => {

@@ -26,8 +26,9 @@ const getOnePodcast = async (podcastId: string) => {
 
 const addOnePodcast = async (newPodcast: any) => {
   try {
-    const data = await Podcast.add(newPodcast);
-    return data.id;
+    // const data = await Podcast.add(newPodcast);
+    // return data.id;
+    return { test: "test" };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }

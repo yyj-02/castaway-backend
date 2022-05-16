@@ -1,10 +1,12 @@
 export interface Podcast {
-  id?: string;
+  id: string;
   title: string;
+  description: string;
   path: string;
+  imgPath: string;
   durationInMinutes: number;
   artistId: string;
-  genre: Genre;
+  genres: Genres;
   public: boolean;
 }
 
