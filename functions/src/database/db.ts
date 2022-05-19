@@ -1,8 +1,17 @@
-import { initializeApp, applicationDefault, cert } from "firebase-admin/app";
-import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+
+import { converter, Podcast } from "../commons";
 
 // Initializing
 initializeApp();
-const db = getFirestore();
+const firestore = getFirestore();
 
-export default db;
+const dataPoint = <T>(collectionPath: string) =>
+  firestore.collection(collectionPath).withConverter(converter<T>());
+
+const db = {
+  podcasts: dataPoint<Podcast>("podcasts"),
+};
+
+export const PodcastsCollection = db.podcasts;

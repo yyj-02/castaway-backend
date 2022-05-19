@@ -1,9 +1,10 @@
-import Podcast from "../database/Podcast";
+import { Podcast, Podcasts } from "../commons";
+import { PodcastsCollection } from "../database/db";
 
 const getAllPodcasts = async () => {
   try {
-    const res = await Podcast.get();
-    const data: { id: string }[] = [];
+    const res = await PodcastsCollection.get();
+    const data: Podcasts = [];
     res.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
     return data;
   } catch (err: any) {
@@ -13,7 +14,7 @@ const getAllPodcasts = async () => {
 
 const getOnePodcast = async (podcastId: string) => {
   try {
-    const data = await Podcast.doc(podcastId).get();
+    const data = await PodcastsCollection.doc(podcastId).get();
     if (!data.exists) {
       throw { status: 404, message: `Document id ${podcastId} not found.` };
     } else {
@@ -24,23 +25,24 @@ const getOnePodcast = async (podcastId: string) => {
   }
 };
 
-const addOnePodcast = async (newPodcast: any) => {
+const addOnePodcast = async (newPodcast: Podcast) => {
   try {
-    // const data = await Podcast.add(newPodcast);
-    // return data.id;
-    return { test: "test" };
+    const data = await PodcastsCollection.add(newPodcast);
+    return data.id;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
 };
 
-const updateOnePodcast = async (podcastId: string, updatedPodcast: any) => {
+const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
   try {
-    const res = await Podcast.doc(podcastId).get();
+    const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
       throw { status: 404, message: `Document id ${podcastId} not found.` };
     } else {
-      const data = await Podcast.doc(podcastId).update(updatedPodcast);
+      const data = await PodcastsCollection.doc(podcastId).update(
+        updatedPodcast
+      );
       return data;
     }
   } catch (err: any) {
@@ -50,11 +52,11 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: any) => {
 
 const deleteOnePodcast = async (podcastId: string) => {
   try {
-    const res = await Podcast.doc(podcastId).get();
+    const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
       throw { status: 404, message: `Document id ${podcastId} not found.` };
     } else {
-      const data = await Podcast.doc(podcastId).delete();
+      const data = await PodcastsCollection.doc(podcastId).delete();
       return data;
     }
   } catch (err: any) {

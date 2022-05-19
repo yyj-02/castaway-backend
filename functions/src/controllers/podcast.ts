@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
-import Podcast from "../services/podcast";
+import { Podcast } from "../commons";
+import PodcastService from "../services/podcast";
 
 const getAllPodcasts = async (req: Request, res: Response) => {
   try {
-    const data = await Podcast.getAllPodcasts();
+    const data = await PodcastService.getAllPodcasts();
     res.json(data);
   } catch (err: any) {
     res
@@ -14,12 +14,12 @@ const getAllPodcasts = async (req: Request, res: Response) => {
 };
 
 const getOnePodcast = async (req: Request, res: Response) => {
+  const {
+    params: { podcastId },
+  } = req;
+
   try {
-    const {
-      params: { podcastId },
-    } = req;
-    console.log(podcastId);
-    const data = await Podcast.getOnePodcast(podcastId);
+    const data = await PodcastService.getOnePodcast(podcastId);
     res.json(data);
   } catch (err: any) {
     res
@@ -29,12 +29,20 @@ const getOnePodcast = async (req: Request, res: Response) => {
 };
 
 const addOnePodcast = async (req: Request, res: Response) => {
+  const { body } = req;
+  const newPodcast: Podcast = {
+    title: body.title,
+    description: body.description,
+    durationInMinutes: 0,
+    path: "empty",
+    imgPath: "empty",
+    artistId: "Sample Artist",
+    genres: body.genres,
+    public: body.public,
+  };
+
   try {
-    const { body } = req;
-    const newPodcast = {
-      title: body.title,
-    };
-    const data = await Podcast.addOnePodcast(newPodcast);
+    const data = await PodcastService.addOnePodcast(newPodcast);
     res.json(data);
   } catch (err: any) {
     res
@@ -44,15 +52,26 @@ const addOnePodcast = async (req: Request, res: Response) => {
 };
 
 const updateOnePodcast = async (req: Request, res: Response) => {
+  const {
+    body,
+    params: { podcastId },
+  } = req;
+  const updatedPodcast = {
+    title: body.title,
+    description: body.description,
+    durationInMinutes: 0,
+    path: "empty",
+    imgPath: "empty",
+    artistId: "Sample Artist",
+    genres: body.genres,
+    public: body.public,
+  };
+
   try {
-    const {
-      body,
-      params: { podcastId },
-    } = req;
-    const updatedPodcast = {
-      title: body.title,
-    };
-    const data = await Podcast.updateOnePodcast(podcastId, updatedPodcast);
+    const data = await PodcastService.updateOnePodcast(
+      podcastId,
+      updatedPodcast
+    );
     res.json(data);
   } catch (err: any) {
     res
@@ -66,7 +85,7 @@ const deleteOnePodcast = async (req: Request, res: Response) => {
     const {
       params: { podcastId },
     } = req;
-    const data = await Podcast.deleteOnePodcast(podcastId);
+    const data = await PodcastService.deleteOnePodcast(podcastId);
     res.json(data);
   } catch (err: any) {
     res

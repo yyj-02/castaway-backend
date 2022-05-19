@@ -8,7 +8,7 @@ service cloud.firestore {
         && request.resource.data.description is string && request.resource.data.description.trim() != ""
         && request.resource.data.path is string && request.resource.data.path.trim() != ""
         && request.resource.data.imgPath is string && request.resource.data.imgPath.trim() != ""
-        && request.resource.data.durationInMinutes is number
+        && request.resource.data.durationInMinutes is number && request.resource.data.durationInMinutes > 0
         && request.resource.data.artistId is string && request.resource.data.artistId.trim() != ""
         && request.resource.data.genres is list && request.resource.data.genres.size() > 0
         && request.resource.data.public is bool;

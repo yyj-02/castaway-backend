@@ -1,5 +1,5 @@
 export interface Podcast {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   path: string;
