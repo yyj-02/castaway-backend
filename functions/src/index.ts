@@ -28,6 +28,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("<h2>Castaway backend service is up and running.</h2>");
 });
+
 app.use("/api/podcasts", podcastRouter);
 
 // Convert to Firebase functions

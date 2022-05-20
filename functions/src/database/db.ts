@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-import { converter, Podcast } from "../commons";
+import { converter, Podcast, Upload } from "../commons";
 
 // Initializing
 initializeApp();
@@ -12,6 +12,9 @@ const dataPoint = <T>(collectionPath: string) =>
 
 const db = {
   podcasts: dataPoint<Podcast>("podcasts"),
+  uploads: dataPoint<Upload>("uploads"),
 };
 
 export const PodcastsCollection = db.podcasts;
+
+export const UploadsCollection = db.uploads;

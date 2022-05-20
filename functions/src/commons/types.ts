@@ -1,5 +1,5 @@
 export interface Podcast {
-  id?: string;
+  podcastId?: string;
   title: string;
   description: string;
   path: string;
@@ -34,3 +34,9 @@ export interface User {
 }
 
 export type Users = User[];
+
+export interface Upload {
+  uploadId?: string;
+  filepath: string;
+  durationInMinutes: number;
+}

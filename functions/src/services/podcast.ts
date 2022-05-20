@@ -1,11 +1,11 @@
-import { Podcast, Podcasts } from "../commons";
-import { PodcastsCollection } from "../database/db";
+import { Podcast, Podcasts, Upload } from "../commons";
+import { PodcastsCollection, UploadsCollection } from "../database/db";
 
 const getAllPodcasts = async () => {
   try {
     const res = await PodcastsCollection.get();
     const data: Podcasts = [];
-    res.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
+    res.forEach((doc) => data.push({ podcastId: doc.id, ...doc.data() }));
     return data;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
@@ -14,11 +14,11 @@ const getAllPodcasts = async () => {
 
 const getOnePodcast = async (podcastId: string) => {
   try {
-    const data = await PodcastsCollection.doc(podcastId).get();
-    if (!data.exists) {
+    const res = await PodcastsCollection.doc(podcastId).get();
+    if (!res.exists) {
       throw { status: 404, message: `Document id ${podcastId} not found.` };
     } else {
-      return data.data();
+      return res.data();
     }
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
@@ -27,8 +27,8 @@ const getOnePodcast = async (podcastId: string) => {
 
 const addOnePodcast = async (newPodcast: Podcast) => {
   try {
-    const data = await PodcastsCollection.add(newPodcast);
-    return data.id;
+    const res = await PodcastsCollection.add(newPodcast);
+    return { id: res.id };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -64,10 +64,24 @@ const deleteOnePodcast = async (podcastId: string) => {
   }
 };
 
+const uploadOnePodcast = async (filepath: string) => {
+  try {
+    const data: Upload = {
+      filepath: filepath,
+      durationInMinutes: 20,
+    };
+    const res = await UploadsCollection.add(data);
+    return { uploadId: res.id };
+  } catch (err: any) {
+    throw { status: err?.status || 500, message: err?.message || err };
+  }
+};
+
 export default {
   getAllPodcasts,
   getOnePodcast,
   addOnePodcast,
   updateOnePodcast,
   deleteOnePodcast,
+  uploadOnePodcast,
 };
