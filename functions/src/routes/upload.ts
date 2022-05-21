@@ -8,4 +8,8 @@ const router = express.Router();
 // Endpoints
 router.post("/", upload, Upload.postOneUpload);
 
+router.put("/:uploadId", upload, Upload.updateOneUpload);
+
+router.delete("/:uploadId", Upload.deleteOneUpload);
+
 export default router;

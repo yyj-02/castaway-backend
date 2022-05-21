@@ -85,6 +85,7 @@ const deleteOnePodcast = async (req: Request, res: Response) => {
     const {
       params: { podcastId },
     } = req;
+
     const data = await PodcastService.deleteOnePodcast(podcastId);
     res.json(data);
   } catch (err: any) {
