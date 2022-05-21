@@ -94,24 +94,10 @@ const deleteOnePodcast = async (req: Request, res: Response) => {
   }
 };
 
-const uploadOnePodcast = async (req: Request, res: Response) => {
-  try {
-    const data = await PodcastService.uploadOnePodcast(
-      res.locals.podcastFile.path
-    );
-    res.json(data);
-  } catch (err: any) {
-    res
-      .status(err?.status || 500)
-      .json({ status: "FAILED", data: { error: err?.message || err } });
-  }
-};
-
 export default {
   getAllPodcasts,
   getOnePodcast,
   addOnePodcast,
   updateOnePodcast,
   deleteOnePodcast,
-  uploadOnePodcast,
 };

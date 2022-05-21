@@ -18,8 +18,10 @@ const db = {
   uploads: dataPoint<Upload>("uploads"),
 };
 
+// Firestore
 export const PodcastsCollection = db.podcasts;
 
 export const UploadsCollection = db.uploads;
 
+// Cloud Storage
 export const PodcastsStorage = getStorage().bucket("castaway-podcasts");

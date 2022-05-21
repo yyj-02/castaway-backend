@@ -2,7 +2,6 @@ import * as express from "express";
 import Podcast from "../controllers/podcast";
 import PodcastSchema from "./podcast-schema";
 import requestSchemaValidator from "../middlewares/requestSchemaValidator";
-import upload from "../middlewares/upload";
 
 // Initializing
 const router = express.Router();
@@ -22,7 +21,5 @@ router.put(
 );
 
 router.delete("/:podcastId", Podcast.deleteOnePodcast);
-
-router.post("/upload", upload, Podcast.uploadOnePodcast);
 
 export default router;
