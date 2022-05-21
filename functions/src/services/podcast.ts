@@ -1,5 +1,5 @@
 import { Podcast, Podcasts } from "../commons";
-import { PodcastsCollection } from "../database/db";
+import { PodcastsCollection, UploadsCollection } from "../database/db";
 
 const getAllPodcasts = async () => {
   try {
@@ -19,20 +19,37 @@ const getOnePodcast = async (podcastId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Document id ${podcastId} not found.` };
-    } else {
-      return res.data();
+      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
     }
+
+    return res.data();
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
 };
 
-const addOnePodcast = async (newPodcast: Podcast) => {
+const addOnePodcast = async (uploadId: string, newPodcast: Podcast) => {
   try {
-    const res = await PodcastsCollection.add(newPodcast);
+    const res = await UploadsCollection.doc(uploadId).get();
+    if (!res.exists) {
+      throw { status: 404, message: `Upload id ${uploadId} not found.` };
+    }
 
-    return { podcastId: res.id };
+    const filepath = res.data()?.filepath;
+    if (filepath == undefined) {
+      throw { status: 404, message: `Upload id ${uploadId} not found.` };
+    }
+    newPodcast.path = filepath;
+
+    const data = await PodcastsCollection.add(newPodcast);
+    await UploadsCollection.doc(uploadId)
+      .delete()
+      .catch(async (err) => {
+        await PodcastsCollection.doc(data.id).delete();
+        throw { status: err?.status || 500, message: err?.message || err };
+      });
+
+    return { podcastId: data.id };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -42,14 +59,12 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Document id ${podcastId} not found.` };
-    } else {
-      const data = await PodcastsCollection.doc(podcastId).update(
-        updatedPodcast
-      );
-
-      return data;
+      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
     }
+
+    const data = await PodcastsCollection.doc(podcastId).update(updatedPodcast);
+
+    return data;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -59,12 +74,12 @@ const deleteOnePodcast = async (podcastId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Document id ${podcastId} not found.` };
-    } else {
-      const data = await PodcastsCollection.doc(podcastId).delete();
-
-      return data;
+      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
     }
+
+    const data = await PodcastsCollection.doc(podcastId).delete();
+
+    return data;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }

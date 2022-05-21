@@ -30,6 +30,7 @@ const getOnePodcast = async (req: Request, res: Response) => {
 
 const addOnePodcast = async (req: Request, res: Response) => {
   const { body } = req;
+  const uploadId = body.uploadId;
   const newPodcast: Podcast = {
     title: body.title,
     description: body.description,
@@ -42,7 +43,7 @@ const addOnePodcast = async (req: Request, res: Response) => {
   };
 
   try {
-    const data = await podcastService.addOnePodcast(newPodcast);
+    const data = await podcastService.addOnePodcast(uploadId, newPodcast);
     res.json(data);
   } catch (err: any) {
     res

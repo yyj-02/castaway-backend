@@ -1,11 +1,13 @@
-import { initializeApp } from "firebase-admin/app";
+import * as admin from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
+const credential = require("../../castaway-819d7-92a0eafe1fae.json");
 
 import { converter, Podcast, Upload } from "../commons";
 
 // Initializing
-initializeApp({
+admin.initializeApp({
+  credential: admin.credential.cert(credential),
   storageBucket: "castaway-819d7.appspot.com",
 });
 const firestore = getFirestore();

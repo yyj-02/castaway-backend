@@ -44,7 +44,7 @@ const updateOneUpload = async (uploadId: string, updatedFilepath: string) => {
 
     const res = await UploadsCollection.doc(uploadId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Document id ${uploadId} not found.` };
+      throw { status: 404, message: `Upload id ${uploadId} not found.` };
     }
 
     const oldFilepath = res.data()?.filepath;
