@@ -1,5 +1,6 @@
 import * as express from "express";
-import Podcast from "../controllers/podcast";
+import podcastController from "../controllers/podcast";
+import streamController from "../controllers/stream";
 import PodcastSchema from "./podcast-schema";
 import requestSchemaValidator from "../middlewares/requestSchemaValidator";
 
@@ -7,19 +8,26 @@ import requestSchemaValidator from "../middlewares/requestSchemaValidator";
 const router = express.Router();
 
 // Endpoints
-router.get("/", Podcast.getAllPodcasts);
+router.get("/", podcastController.getAllPodcasts);
 
-router.get("/:podcastId", Podcast.getOnePodcast);
+router.get("/:podcastId", podcastController.getOnePodcast);
 
-router.post("/", PodcastSchema, requestSchemaValidator, Podcast.addOnePodcast);
+router.get("/:podcastId/stream", streamController.streamOnePodcast);
+
+router.post(
+  "/",
+  PodcastSchema,
+  requestSchemaValidator,
+  podcastController.addOnePodcast
+);
 
 router.put(
   "/:podcastId",
   PodcastSchema,
   requestSchemaValidator,
-  Podcast.updateOnePodcast
+  podcastController.updateOnePodcast
 );
 
-router.delete("/:podcastId", Podcast.deleteOnePodcast);
+router.delete("/:podcastId", podcastController.deleteOnePodcast);
 
 export default router;

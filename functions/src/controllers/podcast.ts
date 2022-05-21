@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { Podcast } from "../commons";
-import PodcastService from "../services/podcast";
+import podcastService from "../services/podcast";
 
 const getAllPodcasts = async (req: Request, res: Response) => {
   try {
-    const data = await PodcastService.getAllPodcasts();
+    const data = await podcastService.getAllPodcasts();
     res.json(data);
   } catch (err: any) {
     res
@@ -19,7 +19,7 @@ const getOnePodcast = async (req: Request, res: Response) => {
   } = req;
 
   try {
-    const data = await PodcastService.getOnePodcast(podcastId);
+    const data = await podcastService.getOnePodcast(podcastId);
     res.json(data);
   } catch (err: any) {
     res
@@ -42,7 +42,7 @@ const addOnePodcast = async (req: Request, res: Response) => {
   };
 
   try {
-    const data = await PodcastService.addOnePodcast(newPodcast);
+    const data = await podcastService.addOnePodcast(newPodcast);
     res.json(data);
   } catch (err: any) {
     res
@@ -68,7 +68,7 @@ const updateOnePodcast = async (req: Request, res: Response) => {
   };
 
   try {
-    const data = await PodcastService.updateOnePodcast(
+    const data = await podcastService.updateOnePodcast(
       podcastId,
       updatedPodcast
     );
@@ -86,7 +86,7 @@ const deleteOnePodcast = async (req: Request, res: Response) => {
       params: { podcastId },
     } = req;
 
-    const data = await PodcastService.deleteOnePodcast(podcastId);
+    const data = await podcastService.deleteOnePodcast(podcastId);
     res.json(data);
   } catch (err: any) {
     res

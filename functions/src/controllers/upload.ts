@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UploadService from "../services/upload";
+import uploadService from "../services/upload";
 
 const postOneUpload = async (req: Request, res: Response) => {
   const {
@@ -7,7 +7,7 @@ const postOneUpload = async (req: Request, res: Response) => {
   } = res;
 
   try {
-    const data = await UploadService.postOneUpload(podcastFile.path);
+    const data = await uploadService.postOneUpload(podcastFile.path);
     res.json(data);
   } catch (err: any) {
     res
@@ -25,7 +25,7 @@ const updateOneUpload = async (req: Request, res: Response) => {
   } = res;
 
   try {
-    const data = await UploadService.updateOneUpload(
+    const data = await uploadService.updateOneUpload(
       uploadId,
       podcastFile.path
     );
@@ -43,7 +43,7 @@ const deleteOneUpload = async (req: Request, res: Response) => {
   } = req;
 
   try {
-    const data = await UploadService.deleteOneUpload(uploadId);
+    const data = await uploadService.deleteOneUpload(uploadId);
     res.json(data);
   } catch (err: any) {
     res
