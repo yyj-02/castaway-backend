@@ -37,6 +37,12 @@ export type Users = User[];
 
 export interface Upload {
   uploadId?: string;
+  filetype: FileType;
   filepath: string;
-  durationInMinutes: number;
+  durationInMinutes?: number;
+}
+
+export enum FileType {
+  IMAGE = "image",
+  PODCAST = "podcast",
 }

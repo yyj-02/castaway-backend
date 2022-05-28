@@ -1,15 +1,38 @@
 import * as express from "express";
 import uploadController from "../controllers/upload";
-import upload from "../middlewares/upload";
+import uploadMiddleware from "../middlewares/upload";
 
 // Initializing
 const router = express.Router();
 
-// Endpoints
-router.post("/", upload, uploadController.postOneUpload);
+// Endpoints for podcasts
+router.post(
+  "/podcasts",
+  uploadMiddleware.uploadAudio,
+  uploadController.postOneUpload
+);
 
-router.put("/:uploadId", upload, uploadController.updateOneUpload);
+router.put(
+  "/podcasts/:uploadId",
+  uploadMiddleware.uploadAudio,
+  uploadController.updateOneUpload
+);
 
-router.delete("/:uploadId", uploadController.deleteOneUpload);
+router.delete("/podcasts/:uploadId", uploadController.deleteOneUpload);
+
+// Endpoints for images
+router.post(
+  "/images",
+  uploadMiddleware.uploadImage,
+  uploadController.postOneUpload
+);
+
+router.put(
+  "/images/:uploadId",
+  uploadMiddleware.uploadImage,
+  uploadController.updateOneUpload
+);
+
+router.delete("/images/:uploadId", uploadController.deleteOneUpload);
 
 export default router;

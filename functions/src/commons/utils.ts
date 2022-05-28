@@ -1,17 +1,11 @@
 import { GetSignedUrlConfig } from "@google-cloud/storage";
 import { PodcastsStorage } from "../database/db";
 
-export const converter = <T>() => ({
-  toFirestore: (data: T) => data,
-  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
-    snap.data() as T,
-});
-
-export const generateV4ReadSignedUrl = async (fileName: string) => {
+export const generateV4ReadSignedUrlOneMinute = async (fileName: string) => {
   // These options will allow temporary read access to the file
   const options: GetSignedUrlConfig = {
     action: "read",
-    expires: Date.now() + 15 * 60 * 1000,
+    expires: Date.now() + 1 * 60 * 1000,
     version: "v4",
   };
 

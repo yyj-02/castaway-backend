@@ -1,13 +1,21 @@
 import { check } from "express-validator";
 
 const PostSchema = [
-  check("uploadId")
+  check("podcastUploadId")
     .isString()
-    .withMessage("Upload id must be a string.")
+    .withMessage("Podcast upload id must be a string.")
     .bail()
     .trim()
     .notEmpty()
-    .withMessage("Upload id must not be empty."),
+    .withMessage("Podcast upload id must not be empty."),
+
+  check("imageUploadId")
+    .isString()
+    .withMessage("Image upload id must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Image upload id must not be empty."),
 
   check("title")
     .isString()
@@ -56,7 +64,29 @@ const UpdateSchema = [
   check("public").isBoolean().withMessage("Public must be a boolean."),
 ];
 
+const UpdateAudioSchema = [
+  check("updatedPodcastUploadId")
+    .isString()
+    .withMessage("Podcast upload id must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Podcast upload id must not be empty."),
+];
+
+const UpdateImageSchema = [
+  check("updatedImageUploadId")
+    .isString()
+    .withMessage("Image upload id must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Image upload id must not be empty."),
+];
+
 export default {
   PostSchema,
   UpdateSchema,
+  UpdateAudioSchema,
+  UpdateImageSchema,
 };

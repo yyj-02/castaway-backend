@@ -28,6 +28,20 @@ router.put(
   podcastController.updateOnePodcast
 );
 
+router.put(
+  "/:podcastId/podcast",
+  PodcastSchema.UpdateAudioSchema,
+  requestSchemaValidator,
+  podcastController.updateOnePodcastAudio
+);
+
+router.put(
+  "/:podcastId/image",
+  PodcastSchema.UpdateImageSchema,
+  requestSchemaValidator,
+  podcastController.updateOnePodcastImage
+);
+
 router.delete("/:podcastId", podcastController.deleteOnePodcast);
 
 export default router;

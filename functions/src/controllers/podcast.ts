@@ -30,7 +30,7 @@ const getOnePodcast = async (req: Request, res: Response) => {
 
 const addOnePodcast = async (req: Request, res: Response) => {
   const { body } = req;
-  const uploadId = body.uploadId;
+  const { podcastUploadId, imageUploadId } = body;
   const newPodcast: Podcast = {
     title: body.title,
     description: body.description,
@@ -43,7 +43,11 @@ const addOnePodcast = async (req: Request, res: Response) => {
   };
 
   try {
-    const data = await podcastService.addOnePodcast(uploadId, newPodcast);
+    const data = await podcastService.addOnePodcast(
+      podcastUploadId,
+      imageUploadId,
+      newPodcast
+    );
     res.json(data);
   } catch (err: any) {
     res
@@ -61,9 +65,9 @@ const updateOnePodcast = async (req: Request, res: Response) => {
     title: body.title,
     description: body.description,
     durationInMinutes: 0,
-    path: "empty",
-    imgPath: "empty",
-    artistId: "Sample Artist",
+    path: "",
+    imgPath: "",
+    artistId: "",
     genres: body.genres,
     public: body.public,
   };
@@ -72,6 +76,44 @@ const updateOnePodcast = async (req: Request, res: Response) => {
     const data = await podcastService.updateOnePodcast(
       podcastId,
       updatedPodcast
+    );
+    res.json(data);
+  } catch (err: any) {
+    res
+      .status(err?.status || 500)
+      .json({ status: "FAILED", data: { error: err?.message || err } });
+  }
+};
+
+const updateOnePodcastAudio = async (req: Request, res: Response) => {
+  const {
+    body: { updatedPodcastUploadId },
+    params: { podcastId },
+  } = req;
+
+  try {
+    const data = await podcastService.updateOnePodcastAudio(
+      podcastId,
+      updatedPodcastUploadId
+    );
+    res.json(data);
+  } catch (err: any) {
+    res
+      .status(err?.status || 500)
+      .json({ status: "FAILED", data: { error: err?.message || err } });
+  }
+};
+
+const updateOnePodcastImage = async (req: Request, res: Response) => {
+  const {
+    body: { updatedImageUploadId },
+    params: { podcastId },
+  } = req;
+
+  try {
+    const data = await podcastService.updateOnePodcastImage(
+      podcastId,
+      updatedImageUploadId
     );
     res.json(data);
   } catch (err: any) {
@@ -101,5 +143,7 @@ export default {
   getOnePodcast,
   addOnePodcast,
   updateOnePodcast,
+  updateOnePodcastAudio,
+  updateOnePodcastImage,
   deleteOnePodcast,
 };

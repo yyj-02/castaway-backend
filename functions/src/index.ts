@@ -25,6 +25,36 @@ app.use(helmet());
 app.use(morgan("tiny"));
 app.use(express.json());
 
+// const options = {
+//   definition: {
+//     openapi: "3.0.0",
+//     info: {
+//       title: "LogRocket Express API with Swagger",
+//       version: "0.1.0",
+//       description:
+//         "This is a simple CRUD API application made with Express and documented with Swagger",
+//       license: {
+//         name: "MIT",
+//         url: "https://spdx.org/licenses/MIT.html",
+//       },
+//       contact: {
+//         name: "LogRocket",
+//         url: "https://logrocket.com",
+//         email: "info@email.com",
+//       },
+//     },
+//     servers: [
+//       {
+//         url: "http://localhost:3000/books",
+//       },
+//     ],
+//   },
+//   apis: ["./routes/*.ts"],
+// };
+
+// const specs = swaggerJsDoc(options);
+// app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
 // Endpoints
 app.get("/", (req, res) => {
   res.send("<h2>Castaway backend service is up and running.</h2>");

@@ -1,4 +1,4 @@
-import { generateV4ReadSignedUrl } from "../commons";
+import { generateV4ReadSignedUrlOneMinute } from "../commons";
 import { PodcastsCollection } from "../database/db";
 
 const streamOnePodcast = async (podcastId: string) => {
@@ -14,10 +14,16 @@ const streamOnePodcast = async (podcastId: string) => {
     }
 
     // Get stream url
-    const podcastUrl = await generateV4ReadSignedUrl(filepath);
+    const podcastUrl = await generateV4ReadSignedUrlOneMinute(filepath);
+    if (podcastUrl.length == 0) {
+      throw {
+        status: 500,
+        message: `Podcast stream link cannot be generated.`,
+      };
+    }
     const data = {
       podcastUrl,
-      message: "This link will allow you to stream the podcast for 15 minutes.",
+      message: "This link will expire in 1 minute.",
     };
 
     return data;

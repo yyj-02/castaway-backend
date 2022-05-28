@@ -24,9 +24,7 @@
     "fs": "^0.0.1-security",
     "get-audio-duration": "^3.1.0",
     "helmet": "^5.0.2",
-    "morgan": "^1.10.0",
-    "swagger-jsdoc": "^6.2.1",
-    "swagger-ui-express": "^4.4.0"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^2.0.2",

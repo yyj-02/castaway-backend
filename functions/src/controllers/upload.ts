@@ -1,13 +1,27 @@
 import { Request, Response } from "express";
+import { FileType } from "../commons";
 import uploadService from "../services/upload";
 
 const postOneUpload = async (req: Request, res: Response) => {
   const {
-    locals: { podcastFile },
+    locals: { filetype },
   } = res;
 
+  const file =
+    filetype === FileType.PODCAST
+      ? res.locals.podcastFile
+      : filetype === FileType.IMAGE
+      ? res.locals.imageFile
+      : undefined;
+
+  if (file === undefined) {
+    res
+      .status(500)
+      .json({ status: "FAILED", data: { error: "Problem with filetype." } });
+  }
+
   try {
-    const data = await uploadService.postOneUpload(podcastFile.path);
+    const data = await uploadService.postOneUpload(filetype, file.path);
     res.json(data);
   } catch (err: any) {
     res
@@ -20,14 +34,29 @@ const updateOneUpload = async (req: Request, res: Response) => {
   const {
     params: { uploadId },
   } = req;
+
   const {
-    locals: { podcastFile },
+    locals: { filetype },
   } = res;
+
+  const file =
+    filetype === FileType.PODCAST
+      ? res.locals.podcastFile
+      : filetype === FileType.IMAGE
+      ? res.locals.imageFile
+      : undefined;
+
+  if (file === undefined) {
+    res
+      .status(500)
+      .json({ status: "FAILED", data: { error: "Problem with filetype." } });
+  }
 
   try {
     const data = await uploadService.updateOneUpload(
+      filetype,
       uploadId,
-      podcastFile.path
+      file.path
     );
     res.json(data);
   } catch (err: any) {

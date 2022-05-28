@@ -3,7 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 const credential = require("../../castaway-819d7-92a0eafe1fae.json");
 
-import { converter, Podcast, Upload } from "../commons";
+import { Podcast, Upload } from "../commons";
 
 // Initializing
 admin.initializeApp({
@@ -11,6 +11,12 @@ admin.initializeApp({
   storageBucket: "castaway-819d7.appspot.com",
 });
 const firestore = getFirestore();
+
+const converter = <T>() => ({
+  toFirestore: (data: T) => data,
+  fromFirestore: (snap: FirebaseFirestore.QueryDocumentSnapshot) =>
+    snap.data() as T,
+});
 
 const dataPoint = <T>(collectionPath: string) =>
   firestore.collection(collectionPath).withConverter(converter<T>());
@@ -27,3 +33,5 @@ export const UploadsCollection = db.uploads;
 
 // Cloud Storage
 export const PodcastsStorage = getStorage().bucket("castaway-podcasts");
+
+export const ImagesStorage = getStorage().bucket("castaway-images");
