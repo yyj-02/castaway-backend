@@ -16,14 +16,14 @@ router.get("/:podcastId/stream", streamController.streamOnePodcast);
 
 router.post(
   "/",
-  PodcastSchema.PostSchema,
+  PodcastSchema.PostPodcastSchema,
   requestSchemaValidator,
   podcastController.addOnePodcast
 );
 
 router.put(
   "/:podcastId",
-  PodcastSchema.UpdateSchema,
+  PodcastSchema.UpdatePodcastSchema,
   requestSchemaValidator,
   podcastController.updateOnePodcast
 );

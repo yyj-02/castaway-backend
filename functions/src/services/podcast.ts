@@ -120,9 +120,9 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
     updatedPodcast.imgPath = imgPath;
     updatedPodcast.artistId = artistId;
 
-    const data = await PodcastsCollection.doc(podcastId).update(updatedPodcast);
+    await PodcastsCollection.doc(podcastId).update(updatedPodcast);
 
-    return data;
+    return { status: "OK", message: "Your podcast has been updated." };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -167,7 +167,7 @@ const updateOnePodcastAudio = async (
       throw { status: 404, message: `Podcast id ${podcastId} not found.` };
     }
 
-    const data = PodcastsCollection.doc(podcastId).update({
+    await PodcastsCollection.doc(podcastId).update({
       path: updatedPodcastFilepath,
       durationInMinutes: updatedDurationInMinutes,
     });
@@ -176,7 +176,10 @@ const updateOnePodcastAudio = async (
 
     await UploadsCollection.doc(updatedPodcastUploadId).delete();
 
-    return await data;
+    return {
+      status: "OK",
+      message: "Your podcast audio track has been updated.",
+    };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -217,7 +220,7 @@ const updateOnePodcastImage = async (
       throw { status: 404, message: `Podcast id ${podcastId} not found.` };
     }
 
-    const data = PodcastsCollection.doc(podcastId).update({
+    await PodcastsCollection.doc(podcastId).update({
       imgPath: updatedImageFilepath,
     });
 
@@ -225,7 +228,10 @@ const updateOnePodcastImage = async (
 
     await UploadsCollection.doc(updatedImageUploadId).delete();
 
-    return await data;
+    return {
+      status: "OK",
+      message: "Your podcast cover image has been updated.",
+    };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -245,9 +251,9 @@ const deleteOnePodcast = async (podcastId: string) => {
       await ImagesStorage.file(imageFilepath).delete();
     }
 
-    const data = await PodcastsCollection.doc(podcastId).delete();
+    await PodcastsCollection.doc(podcastId).delete();
 
-    return data;
+    return { status: "OK", message: "Your podcast has been removed." };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }

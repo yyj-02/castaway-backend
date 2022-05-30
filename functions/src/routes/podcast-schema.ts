@@ -1,6 +1,6 @@
 import { check } from "express-validator";
 
-const PostSchema = [
+const PostPodcastSchema = [
   check("podcastUploadId")
     .isString()
     .withMessage("Podcast upload id must be a string.")
@@ -40,7 +40,7 @@ const PostSchema = [
   check("public").isBoolean().withMessage("Public must be a boolean."),
 ];
 
-const UpdateSchema = [
+const UpdatePodcastSchema = [
   check("title")
     .isString()
     .withMessage("Title must be a string.")
@@ -85,8 +85,8 @@ const UpdateImageSchema = [
 ];
 
 export default {
-  PostSchema,
-  UpdateSchema,
+  PostPodcastSchema,
+  UpdatePodcastSchema,
   UpdateAudioSchema,
   UpdateImageSchema,
 };

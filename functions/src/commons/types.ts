@@ -26,11 +26,11 @@ export enum Genre {
 export type Genres = Genre[];
 
 export interface User {
-  id?: string;
-  username: string;
-  name: string;
-  password: string;
-  favorite: string[];
+  userId?: string;
+  email: string;
+  displayName: string;
+  creations: string[];
+  favorites: string[];
 }
 
 export type Users = User[];
