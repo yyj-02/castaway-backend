@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import authService from "../services/auth";
 
-const login = (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
+  const {
+    body: { email, password },
+  } = req;
+
   try {
-    const data = authService.login("test@gmail.com", "fafeaf");
+    const data = await authService.login({ email, password });
     res.json(data);
   } catch (err: any) {
     res

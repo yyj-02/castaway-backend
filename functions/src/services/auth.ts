@@ -4,7 +4,13 @@ import "dotenv/config";
 import { User } from "../commons";
 import { UsersCollection } from "../database/db";
 
-const login = async (email: string, password: string) => {
+const login = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
   try {
     const res = await axios.post(
       `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.IDENTITY_SERVER_API_KEY}`,
@@ -15,16 +21,16 @@ const login = async (email: string, password: string) => {
       }
     );
 
-    const tokenData = res.data();
-
-    if (!tokenData.registered) {
+    if (!res.data.registered) {
       throw { status: 404, message: "User not found. Sign up now?" };
     }
     const data = {
-      tokenId: tokenData.idToken,
-      refreshToken: tokenData.refreshToken,
-      expiresIn: tokenData.expiresIn,
+      idToken: res.data.idToken,
+      userId: res.data.localId,
+      refreshToken: res.data.refreshToken,
+      expiresIn: res.data.expiresIn,
     };
+
     return data;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
