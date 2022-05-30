@@ -1,5 +1,5 @@
 import axios from "axios";
-import { refreshToken } from "firebase-admin/app";
+import "dotenv/config";
 
 import { User } from "../commons";
 import { UsersCollection } from "../database/db";
@@ -7,7 +7,7 @@ import { UsersCollection } from "../database/db";
 const login = async (email: string, password: string) => {
   try {
     const res = await axios.post(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4XcRGBApDUKVrlLAkb75PzdJ_skDuPFA",
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.IDENTITY_SERVER_API_KEY}`,
       {
         email,
         password,
@@ -42,7 +42,7 @@ const signup = async ({
 }) => {
   try {
     const res = await axios.post(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA4XcRGBApDUKVrlLAkb75PzdJ_skDuPFA",
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.IDENTITY_SERVER_API_KEY}`,
       {
         email: email,
         password: password,
@@ -75,7 +75,7 @@ const signup = async ({
 const deleteAccount = async (userId: string) => {
   try {
     await axios.post(
-      "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=AIzaSyA4XcRGBApDUKVrlLAkb75PzdJ_skDuPFA",
+      `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${process.env.IDENTITY_SERVER_API_KEY}`,
       { idToken: userId }
     );
 

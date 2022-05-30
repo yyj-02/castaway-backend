@@ -10,3 +10,5 @@ node_modules/
 
 # Cloud storage credentials
 castaway-819d7-92a0eafe1fae.json
+
+.env
