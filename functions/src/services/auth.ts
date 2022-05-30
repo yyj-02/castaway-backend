@@ -24,15 +24,40 @@ const login = async ({
     if (!res.data.registered) {
       throw { status: 404, message: "User not found. Sign up now?" };
     }
+
+    const userAccount = await UsersCollection.doc(res.data.localId).get();
+
     const data = {
       idToken: res.data.idToken,
       userId: res.data.localId,
       refreshToken: res.data.refreshToken,
       expiresIn: res.data.expiresIn,
+      displayName: userAccount.data()?.displayName,
     };
 
     return data;
   } catch (err: any) {
+    throw { status: err?.status || 500, message: err?.message || err };
+  }
+};
+
+const refreshToken = async (refreshToken: string) => {
+  try {
+    const res = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${process.env.IDENTITY_SERVER_API_KEY}`,
+      { grant_type: "refresh_token", refresh_token: refreshToken }
+    );
+
+    const data = {
+      expiresIn: res.data.expires_in,
+      refreshToken: res.data.refresh_token,
+      idToken: res.data.id_token,
+      userId: res.data.user_id,
+    };
+
+    return data;
+  } catch (err: any) {
+    console.log(err);
     throw { status: err?.status || 500, message: err?.message || err };
   }
 };
