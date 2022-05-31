@@ -1,6 +1,14 @@
 import { check } from "express-validator";
 
 const PostPodcastSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("podcastUploadId")
     .isString()
     .withMessage("Podcast upload id must be a string.")
@@ -41,6 +49,14 @@ const PostPodcastSchema = [
 ];
 
 const UpdatePodcastSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("title")
     .isString()
     .withMessage("Title must be a string.")
@@ -65,6 +81,14 @@ const UpdatePodcastSchema = [
 ];
 
 const UpdateAudioSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("updatedPodcastUploadId")
     .isString()
     .withMessage("Podcast upload id must be a string.")
@@ -75,6 +99,14 @@ const UpdateAudioSchema = [
 ];
 
 const UpdateImageSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("updatedImageUploadId")
     .isString()
     .withMessage("Image upload id must be a string.")
