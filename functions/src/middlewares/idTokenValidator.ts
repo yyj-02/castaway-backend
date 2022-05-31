@@ -10,24 +10,28 @@ const idTokenValidator = async (
     body: { idToken },
   } = req;
 
-  try {
-    // Verifying id token
-    const userData = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.IDENTITY_SERVER_API_KEY}`,
-      { idToken }
-    );
-    const userId = userData.data.users[0].localId;
+  if (idToken != undefined) {
+    try {
+      // Verifying id token
+      const userData = await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.IDENTITY_SERVER_API_KEY}`,
+        { idToken }
+      );
+      const userId = userData.data.users[0].localId;
 
-    // Passing the user id to the next function
-    res.locals.userId = userId;
-
-    next();
-  } catch (err: any) {
-    throw {
-      status: err.status || 404,
-      message: err.message || "Failed to get user id.",
-    };
+      // Passing the user id to the next function
+      res.locals.userId = userId;
+    } catch (err: any) {
+      throw {
+        status: err.status || 404,
+        message: err.message || "Failed to get user id.",
+      };
+    }
+  } else {
+    res.locals.userId = "";
   }
+
+  next();
 };
 
 export default idTokenValidator;

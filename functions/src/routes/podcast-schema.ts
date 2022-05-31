@@ -1,5 +1,16 @@
 import { check } from "express-validator";
 
+const GetOnePodcastSchema = [
+  check("idToken")
+    .optional()
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+];
+
 const PostPodcastSchema = [
   check("idToken")
     .isString()
@@ -117,6 +128,7 @@ const UpdateImageSchema = [
 ];
 
 export default {
+  GetOnePodcastSchema,
   PostPodcastSchema,
   UpdatePodcastSchema,
   UpdateAudioSchema,

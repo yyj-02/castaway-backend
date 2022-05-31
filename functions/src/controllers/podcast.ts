@@ -17,9 +17,12 @@ const getOnePodcast = async (req: Request, res: Response) => {
   const {
     params: { podcastId },
   } = req;
+  const {
+    locals: { userId },
+  } = res;
 
   try {
-    const data = await podcastService.getOnePodcast(podcastId);
+    const data = await podcastService.getOnePodcast(podcastId, userId);
     res.json(data);
   } catch (err: any) {
     res

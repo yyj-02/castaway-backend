@@ -8,7 +8,7 @@ import {
 
 const getAllPodcasts = async () => {
   try {
-    const res = await PodcastsCollection.get();
+    const res = await PodcastsCollection.where("public", "==", true).get();
 
     // Putting the data into an array
     const data: Podcasts = [];
@@ -20,11 +20,21 @@ const getAllPodcasts = async () => {
   }
 };
 
-const getOnePodcast = async (podcastId: string) => {
+const getOnePodcast = async (podcastId: string, userId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
+    console.log(res.data());
     if (!res.exists) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
+    }
+    if (
+      res.data()?.public == false &&
+      userId.localeCompare(res.data()?.artistId || "") != 0
+    ) {
+      throw {
+        status: 403,
+        message: `You do not have access to podcast ${podcastId}`,
+      };
     }
 
     return res.data();
@@ -43,7 +53,7 @@ const addOnePodcast = async (
     if (!podcastRes.exists) {
       throw {
         status: 404,
-        message: `Podcast upload id ${podcastUploadId} not found.`,
+        message: `Podcast upload ${podcastUploadId} not found.`,
       };
     }
 
@@ -57,7 +67,7 @@ const addOnePodcast = async (
     ) {
       throw {
         status: 404,
-        message: `Podcast upload id ${podcastUploadId} not found.`,
+        message: `Podcast upload ${podcastUploadId} not found.`,
       };
     }
     newPodcast.path = podcastFilepath;
@@ -67,7 +77,7 @@ const addOnePodcast = async (
     if (!imageRes.exists) {
       throw {
         status: 404,
-        message: `Image upload id ${imageUploadId} not found.`,
+        message: `Image upload ${imageUploadId} not found.`,
       };
     }
 
@@ -76,7 +86,7 @@ const addOnePodcast = async (
     if (imageFiletype != FileType.IMAGE || imageFilepath == undefined) {
       throw {
         status: 404,
-        message: `Image upload id ${imageUploadId} not found.`,
+        message: `Image upload ${imageUploadId} not found.`,
       };
     }
     newPodcast.imgPath = imageFilepath;
@@ -106,14 +116,14 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     const path = res.data()?.path;
     const imgPath = res.data()?.imgPath;
     const artistId = res.data()?.artistId;
     if (path == undefined || imgPath == undefined || artistId == undefined) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     updatedPodcast.path = path;
@@ -139,7 +149,7 @@ const updateOnePodcastAudio = async (
     if (!podcastRes.exists) {
       throw {
         status: 404,
-        message: `Podcast upload id ${updatedPodcastUploadId} not found.`,
+        message: `Podcast upload ${updatedPodcastUploadId} not found.`,
       };
     }
 
@@ -153,18 +163,18 @@ const updateOnePodcastAudio = async (
     ) {
       throw {
         status: 404,
-        message: `Podcast upload id ${updatedPodcastUploadId} not found.`,
+        message: `Podcast upload ${updatedPodcastUploadId} not found.`,
       };
     }
 
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     const oldPodcastFilepath = res.data()?.path;
     if (oldPodcastFilepath == undefined) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     await PodcastsCollection.doc(podcastId).update({
@@ -194,7 +204,7 @@ const updateOnePodcastImage = async (
     if (!imageRes.exists) {
       throw {
         status: 404,
-        message: `IMage upload id ${updatedImageUploadId} not found.`,
+        message: `IMage upload ${updatedImageUploadId} not found.`,
       };
     }
 
@@ -206,18 +216,18 @@ const updateOnePodcastImage = async (
     ) {
       throw {
         status: 404,
-        message: `Podcast upload id ${updatedImageUploadId} not found.`,
+        message: `Podcast upload ${updatedImageUploadId} not found.`,
       };
     }
 
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     const oldImageFilepath = res.data()?.imgPath;
     if (oldImageFilepath == undefined) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     await PodcastsCollection.doc(podcastId).update({
@@ -241,7 +251,7 @@ const deleteOnePodcast = async (podcastId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
-      throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+      throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
     const filepath = res.data()?.path;
