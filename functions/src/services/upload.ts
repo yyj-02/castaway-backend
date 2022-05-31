@@ -91,7 +91,7 @@ const updateOneUpload = async (uploadId: string, updatedUpload: Upload) => {
 
       // Update in firestore
       updatedData.durationInMinutes = Math.round(await duration);
-      const data = await UploadsCollection.doc(uploadId)
+      await UploadsCollection.doc(uploadId)
         .update(updatedData)
         .catch(async (err: any) => {
           await PodcastsStorage.file(updatedData.filepath).delete();

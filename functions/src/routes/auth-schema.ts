@@ -20,6 +20,16 @@ const LoginSchema = [
     .withMessage("Please use a stronger password."),
 ];
 
+const RefreshTokenSchema = [
+  check("refreshToken")
+    .isString()
+    .withMessage("Refresh token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Refresh token must not be empty."),
+];
+
 const SignupSchema = [
   check("email")
     .isEmail()
@@ -50,5 +60,6 @@ const SignupSchema = [
 
 export default {
   LoginSchema,
+  RefreshTokenSchema,
   SignupSchema,
 };

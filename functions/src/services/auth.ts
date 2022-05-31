@@ -32,7 +32,6 @@ const login = async ({
 
     const data = {
       idToken: res.data.idToken,
-      userId: res.data.localId,
       refreshToken: res.data.refreshToken,
       expiresIn: res.data.expiresIn,
       displayName: userAccount.data()?.displayName,
@@ -47,15 +46,20 @@ const login = async ({
 const refreshToken = async (refreshToken: string) => {
   try {
     const res = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${process.env.IDENTITY_SERVER_API_KEY}`,
+      `https://securetoken.googleapis.com/v1/token?key=${process.env.IDENTITY_SERVER_API_KEY}`,
       { grant_type: "refresh_token", refresh_token: refreshToken }
     );
 
+    const userAccount = await UsersCollection.doc(res.data.user_id).get();
+    if (!userAccount.exists) {
+      throw { status: 404, message: "User not found. Sign up now?" };
+    }
+
     const data = {
-      expiresIn: res.data.expires_in,
-      refreshToken: res.data.refresh_token,
       idToken: res.data.id_token,
-      userId: res.data.user_id,
+      refreshToken: res.data.refresh_token,
+      expiresIn: res.data.expires_in,
+      displayName: userAccount.data()?.displayName,
     };
 
     return data;
@@ -95,9 +99,9 @@ const signup = async ({
 
     const data = {
       idToken: res.data.idToken,
-      userId: res.data.localId,
       refreshToken: res.data.refreshToken,
       expiresIn: res.data.expiresIn,
+      displayName,
     };
 
     return data;
@@ -125,6 +129,7 @@ const deleteAccount = async (userId: string) => {
 
 export default {
   login,
+  refreshToken,
   signup,
   deleteAccount,
 };

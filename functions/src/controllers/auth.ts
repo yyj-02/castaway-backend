@@ -16,6 +16,21 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
+const refreshToken = async (req: Request, res: Response) => {
+  const {
+    body: { refreshToken },
+  } = req;
+
+  try {
+    const data = await authService.refreshToken(refreshToken);
+    res.json(data);
+  } catch (err: any) {
+    res
+      .status(err?.status || 500)
+      .json({ status: "FAILED", data: { error: err?.message || err } });
+  }
+};
+
 const signup = async (req: Request, res: Response) => {
   const {
     body: { email, displayName, password },
@@ -48,6 +63,7 @@ const deleteAccount = async (req: Request, res: Response) => {
 
 export default {
   login,
+  refreshToken,
   signup,
   deleteAccount,
 };

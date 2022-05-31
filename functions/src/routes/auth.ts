@@ -15,6 +15,13 @@ router.post(
 );
 
 router.post(
+  "/refreshToken",
+  AuthSchema.RefreshTokenSchema,
+  requestSchemaValidator,
+  authController.refreshToken
+);
+
+router.post(
   "/signup",
   AuthSchema.SignupSchema,
   requestSchemaValidator,
