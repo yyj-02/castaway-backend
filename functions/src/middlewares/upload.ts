@@ -14,7 +14,6 @@ const idTokenToUserId = async (idToken: string) => {
     );
     const userId = userData.data.users[0].localId;
 
-    // Passing the user id to the next function
     return userId;
   } catch (err: any) {
     throw {

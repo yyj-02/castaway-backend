@@ -63,19 +63,26 @@ const updateOneUpload = async (uploadId: string, updatedUpload: Upload) => {
       filepath: updatedUpload.filepath.split("_").slice(-1)[0],
     };
 
+    const res = await UploadsCollection.doc(uploadId).get();
+    if (!res.exists) {
+      throw { status: 404, message: `Upload id ${uploadId} not found.` };
+    }
+
+    const oldFilepath = res.data()?.filepath;
+    const oldFiletype = res.data()?.filetype;
+    if (oldFilepath == undefined || oldFiletype != updatedData.filetype) {
+      throw { status: 404, message: `Upload id ${uploadId} not found.` };
+    }
+
+    if (res.data()?.userId != updatedData.userId) {
+      throw {
+        status: 403,
+        message: `You do not have access to upload ${uploadId} not found.`,
+      };
+    }
+
     if (updatedData.filetype === FileType.PODCAST) {
       const duration = getAudioDurationInSeconds(updatedUpload.filepath);
-
-      const res = await UploadsCollection.doc(uploadId).get();
-      if (!res.exists) {
-        throw { status: 404, message: `Upload id ${uploadId} not found.` };
-      }
-
-      const oldFilepath = res.data()?.filepath;
-      const oldFiletype = res.data()?.filetype;
-      if (oldFilepath == undefined || oldFiletype != updatedData.filetype) {
-        throw { status: 404, message: `Upload id ${uploadId} not found.` };
-      }
 
       // Upload new file to cloud storage
       await PodcastsStorage.upload(updatedUpload.filepath, {
@@ -94,26 +101,15 @@ const updateOneUpload = async (uploadId: string, updatedUpload: Upload) => {
       // Delete old file from cloud storage
       await PodcastsStorage.file(oldFilepath).delete();
 
-      return data;
+      return { status: "OK", message: "Your upload has been updated." };
     } else if (updatedData.filetype === FileType.IMAGE) {
-      const res = await UploadsCollection.doc(uploadId).get();
-      if (!res.exists) {
-        throw { status: 404, message: `Upload id ${uploadId} not found.` };
-      }
-
-      const oldFilepath = res.data()?.filepath;
-      const oldFiletype = res.data()?.filetype;
-      if (oldFilepath == undefined || oldFiletype != updatedData.filetype) {
-        throw { status: 404, message: `Upload id ${uploadId} not found.` };
-      }
-
       // Upload new file to cloud storage
       await ImagesStorage.upload(updatedUpload.filepath, {
         destination: updatedData.filepath,
       });
 
       // Update in firestore
-      const data = await UploadsCollection.doc(uploadId)
+      await UploadsCollection.doc(uploadId)
         .update(updatedData)
         .catch(async (err: any) => {
           await ImagesStorage.file(updatedData.filepath).delete();
@@ -123,7 +119,7 @@ const updateOneUpload = async (uploadId: string, updatedUpload: Upload) => {
       // Delete old file from cloud storage
       await ImagesStorage.file(oldFilepath).delete();
 
-      return data;
+      return { status: "OK", message: "Your upload has been updated." };
     } else {
       throw { status: 500, message: "Filetype not compatible." };
     }
@@ -146,12 +142,20 @@ const deleteOneUpload = async (uploadId: string, userId: string) => {
       throw { status: 404, message: `Upload id ${uploadId} not found.` };
     }
 
+    if (res.data()?.userId != userId) {
+      throw {
+        status: 403,
+        message: `You do not have access to upload ${uploadId} not found.`,
+      };
+    }
+
     // Delete from cloud storage
     await PodcastsStorage.file(filepath).delete();
 
     // Delete from firestore
-    const data = await UploadsCollection.doc(uploadId).delete();
-    return data;
+    await UploadsCollection.doc(uploadId).delete();
+
+    return { status: "OK", message: "Your upload has been deleted." };
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }

@@ -26,6 +26,9 @@ const login = async ({
     }
 
     const userAccount = await UsersCollection.doc(res.data.localId).get();
+    if (!userAccount.exists) {
+      throw { status: 404, message: "User not found. Sign up now?" };
+    }
 
     const data = {
       idToken: res.data.idToken,
