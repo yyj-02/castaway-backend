@@ -1,7 +1,7 @@
+import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-import { getAuth } from "firebase-admin/auth";
 
-const validateToken = async (
+const idTokenValidator = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -12,8 +12,11 @@ const validateToken = async (
 
   try {
     // Verifying id token
-    const decodedToken = await getAuth().verifyIdToken(idToken);
-    const userId = decodedToken.uid;
+    const userData = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.IDENTITY_SERVER_API_KEY}`,
+      { idToken }
+    );
+    const userId = userData.data.users[0].localId;
 
     // Passing the user id to the next function
     res.locals.userId = userId;
@@ -27,4 +30,4 @@ const validateToken = async (
   }
 };
 
-export default validateToken;
+export default idTokenValidator;

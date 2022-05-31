@@ -8,18 +8,19 @@ import {
   ImagesStorage,
 } from "../database/db";
 
-const postOneUpload = async (filetype: FileType, filepath: string) => {
+const postOneUpload = async (upload: Upload) => {
   try {
     const data: Upload = {
-      filetype: filetype,
-      filepath: filepath.split("_").slice(-1)[0],
+      userId: upload.userId,
+      filetype: upload.filetype,
+      filepath: upload.filepath.split("_").slice(-1)[0],
     };
 
-    if (filetype === FileType.PODCAST) {
-      const duration = getAudioDurationInSeconds(filepath);
+    if (data.filetype === FileType.PODCAST) {
+      const duration = getAudioDurationInSeconds(upload.filepath);
 
       // Upload to cloud storage
-      await PodcastsStorage.upload(filepath, {
+      await PodcastsStorage.upload(upload.filepath, {
         destination: data.filepath,
       });
 
@@ -31,9 +32,9 @@ const postOneUpload = async (filetype: FileType, filepath: string) => {
       });
 
       return { podcastUploadId: res.id };
-    } else if (filetype === FileType.IMAGE) {
+    } else if (data.filetype === FileType.IMAGE) {
       // Upload to cloud storage
-      await ImagesStorage.upload(filepath, {
+      await ImagesStorage.upload(upload.filepath, {
         destination: data.filepath,
       });
 
@@ -50,23 +51,20 @@ const postOneUpload = async (filetype: FileType, filepath: string) => {
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   } finally {
-    fs.unlinkSync(filepath);
+    fs.unlinkSync(upload.filepath);
   }
 };
 
-const updateOneUpload = async (
-  filetype: FileType,
-  uploadId: string,
-  updatedFilepath: string
-) => {
+const updateOneUpload = async (uploadId: string, updatedUpload: Upload) => {
   try {
     const updatedData: Upload = {
-      filetype: filetype,
-      filepath: updatedFilepath.split("_").slice(-1)[0],
+      userId: updatedUpload.userId,
+      filetype: updatedUpload.filetype,
+      filepath: updatedUpload.filepath.split("_").slice(-1)[0],
     };
 
-    if (filetype === FileType.PODCAST) {
-      const duration = getAudioDurationInSeconds(updatedFilepath);
+    if (updatedData.filetype === FileType.PODCAST) {
+      const duration = getAudioDurationInSeconds(updatedUpload.filepath);
 
       const res = await UploadsCollection.doc(uploadId).get();
       if (!res.exists) {
@@ -75,12 +73,12 @@ const updateOneUpload = async (
 
       const oldFilepath = res.data()?.filepath;
       const oldFiletype = res.data()?.filetype;
-      if (oldFilepath == undefined || oldFiletype != filetype) {
+      if (oldFilepath == undefined || oldFiletype != updatedData.filetype) {
         throw { status: 404, message: `Upload id ${uploadId} not found.` };
       }
 
       // Upload new file to cloud storage
-      await PodcastsStorage.upload(updatedFilepath, {
+      await PodcastsStorage.upload(updatedUpload.filepath, {
         destination: updatedData.filepath,
       });
 
@@ -97,7 +95,7 @@ const updateOneUpload = async (
       await PodcastsStorage.file(oldFilepath).delete();
 
       return data;
-    } else if (filetype === FileType.IMAGE) {
+    } else if (updatedData.filetype === FileType.IMAGE) {
       const res = await UploadsCollection.doc(uploadId).get();
       if (!res.exists) {
         throw { status: 404, message: `Upload id ${uploadId} not found.` };
@@ -105,12 +103,12 @@ const updateOneUpload = async (
 
       const oldFilepath = res.data()?.filepath;
       const oldFiletype = res.data()?.filetype;
-      if (oldFilepath == undefined || oldFiletype != filetype) {
+      if (oldFilepath == undefined || oldFiletype != updatedData.filetype) {
         throw { status: 404, message: `Upload id ${uploadId} not found.` };
       }
 
       // Upload new file to cloud storage
-      await ImagesStorage.upload(updatedFilepath, {
+      await ImagesStorage.upload(updatedUpload.filepath, {
         destination: updatedData.filepath,
       });
 
@@ -132,11 +130,11 @@ const updateOneUpload = async (
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   } finally {
-    fs.unlinkSync(updatedFilepath);
+    fs.unlinkSync(updatedUpload.filepath);
   }
 };
 
-const deleteOneUpload = async (uploadId: string) => {
+const deleteOneUpload = async (uploadId: string, userId: string) => {
   try {
     const res = await UploadsCollection.doc(uploadId).get();
     if (!res.exists) {

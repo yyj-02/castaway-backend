@@ -37,6 +37,7 @@ export type Users = User[];
 
 export interface Upload {
   uploadId?: string;
+  userId: string;
   filetype: FileType;
   filepath: string;
   durationInMinutes?: number;

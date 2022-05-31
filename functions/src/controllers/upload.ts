@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { FileType } from "../commons";
+import { FileType, Upload } from "../commons";
 import uploadService from "../services/upload";
 
 const postOneUpload = async (req: Request, res: Response) => {
   const {
-    locals: { filetype },
+    locals: { filetype, userId },
   } = res;
 
   const file =
@@ -20,8 +20,14 @@ const postOneUpload = async (req: Request, res: Response) => {
       .json({ status: "FAILED", data: { error: "Problem with filetype." } });
   }
 
+  const newUpload: Upload = {
+    userId,
+    filepath: file.path,
+    filetype,
+  };
+
   try {
-    const data = await uploadService.postOneUpload(filetype, file.path);
+    const data = await uploadService.postOneUpload(newUpload);
     res.json(data);
   } catch (err: any) {
     res
@@ -36,7 +42,7 @@ const updateOneUpload = async (req: Request, res: Response) => {
   } = req;
 
   const {
-    locals: { filetype },
+    locals: { filetype, userId },
   } = res;
 
   const file =
@@ -52,12 +58,14 @@ const updateOneUpload = async (req: Request, res: Response) => {
       .json({ status: "FAILED", data: { error: "Problem with filetype." } });
   }
 
+  const updatedUpload: Upload = {
+    userId,
+    filepath: file.path,
+    filetype,
+  };
+
   try {
-    const data = await uploadService.updateOneUpload(
-      filetype,
-      uploadId,
-      file.path
-    );
+    const data = await uploadService.updateOneUpload(uploadId, updatedUpload);
     res.json(data);
   } catch (err: any) {
     res
@@ -71,8 +79,12 @@ const deleteOneUpload = async (req: Request, res: Response) => {
     params: { uploadId },
   } = req;
 
+  const {
+    locals: { userId },
+  } = res;
+
   try {
-    const data = await uploadService.deleteOneUpload(uploadId);
+    const data = await uploadService.deleteOneUpload(uploadId, userId);
     res.json(data);
   } catch (err: any) {
     res

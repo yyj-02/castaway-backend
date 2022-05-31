@@ -3,6 +3,7 @@ import podcastController from "../controllers/podcast";
 import streamController from "../controllers/stream";
 import PodcastSchema from "./podcast-schema";
 import requestSchemaValidator from "../middlewares/requestSchemaValidator";
+import idTokenValidator from "../middlewares/idTokenValidator";
 
 // Initializing
 const router = express.Router();
@@ -18,6 +19,7 @@ router.post(
   "/",
   PodcastSchema.PostPodcastSchema,
   requestSchemaValidator,
+  idTokenValidator,
   podcastController.addOnePodcast
 );
 

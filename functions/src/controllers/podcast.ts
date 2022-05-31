@@ -31,13 +31,16 @@ const getOnePodcast = async (req: Request, res: Response) => {
 const addOnePodcast = async (req: Request, res: Response) => {
   const { body } = req;
   const { podcastUploadId, imageUploadId } = body;
+  const {
+    locals: { userId },
+  } = res;
   const newPodcast: Podcast = {
     title: body.title,
     description: body.description,
     durationInMinutes: 0,
     path: "empty",
     imgPath: "empty",
-    artistId: "Sample Artist",
+    artistId: userId,
     genres: body.genres,
     public: body.public,
   };
