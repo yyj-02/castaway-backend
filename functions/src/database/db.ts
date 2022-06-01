@@ -3,13 +3,14 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 const credential = require("../../castaway-819d7-92a0eafe1fae.json");
 
-import { Podcast, Upload } from "../commons";
+import { Podcast, Upload, User } from "../commons";
 
 // Initializing
 admin.initializeApp({
   credential: admin.credential.cert(credential),
   storageBucket: "castaway-819d7.appspot.com",
 });
+
 const firestore = getFirestore();
 
 const converter = <T>() => ({
@@ -24,12 +25,15 @@ const dataPoint = <T>(collectionPath: string) =>
 const db = {
   podcasts: dataPoint<Podcast>("podcasts"),
   uploads: dataPoint<Upload>("uploads"),
+  users: dataPoint<User>("users"),
 };
 
 // Firestore
 export const PodcastsCollection = db.podcasts;
 
 export const UploadsCollection = db.uploads;
+
+export const UsersCollection = db.users;
 
 // Cloud Storage
 export const PodcastsStorage = getStorage().bucket("castaway-podcasts");
