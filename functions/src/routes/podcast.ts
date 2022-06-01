@@ -11,7 +11,7 @@ const router = express.Router();
 // Endpoints
 router.get("/", podcastController.getAllPodcasts);
 
-router.get(
+router.post(
   "/:podcastId",
   PodcastSchema.GetOnePodcastSchema,
   requestSchemaValidator,
@@ -19,7 +19,7 @@ router.get(
   podcastController.getOnePodcast
 );
 
-router.get(
+router.post(
   "/:podcastId/stream",
   PodcastSchema.IdTokenSchema,
   requestSchemaValidator,

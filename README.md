@@ -278,7 +278,7 @@ The process of creating a podcast involves uploading an audio file, followed by 
 <details>
 <summary><h3 style="display: inline;">Access podcast details</h3></summary>
 
-**Method:** GET
+**Method:** POST
 
 **Content-Type:** application/json
 
@@ -304,4 +304,29 @@ The process of creating a podcast involves uploading an audio file, followed by 
 | artistId          | string  | *Now a meaningless id, to be changed to artist name |
 | genres            |  array  | The genres of the podcast                           |
 | public            | boolean | The accessibility of the podcast                    |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Stream podcast</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId/stream
+```
+
+**Request payload:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+
+**Response payload:**
+| Property   |  Type  | Description                          |
+| ---------- | :----: | :----------------------------------- |
+| podcastUrl | string | The url to stream the mp3 file       |
+| message    | string | The duration before the link expires |
 </details>
