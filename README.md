@@ -8,6 +8,12 @@
   Your friendly podcast app (work in progress)
 </h3>
 
+ <br/>
+
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
+
 ## Getting started
 
 Castaway is a podcast app that serves contents from your favorite content creators on iPhone and Android. This project is written in Express and Firebase for the backend and Flutter for the frontend.
@@ -144,6 +150,32 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 | -------- | :----: | :----------------------------- |
 | email    | string | The email used for the account |
 | password | string | The password used              |
+
+**Response payload:**
+| Property     |  Type  | Description                                                  |
+| ------------ | :----: | :----------------------------------------------------------- |
+| idToken      | string | The id token for this session, to be used for other services |
+| refreshToken | string | The refresh token, to be used to retrieve a new id token.    |
+| expiresIn    | number | The duration whereby this id token is valid                  |
+| displayName  | string | The display name for the account                             |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Refresh id token</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/auth/login
+```
+
+**Request payload:**
+| Property     |  Type  | Description              |
+| ------------ | :----: | :----------------------- |
+| refreshToken | string | The latest refresh token |
 
 **Response payload:**
 | Property     |  Type  | Description                                                  |

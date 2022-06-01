@@ -33,6 +33,7 @@ router.put(
   "/:podcastId",
   PodcastSchema.UpdatePodcastSchema,
   requestSchemaValidator,
+  idTokenValidator,
   podcastController.updateOnePodcast
 );
 
@@ -40,6 +41,7 @@ router.put(
   "/:podcastId/podcast",
   PodcastSchema.UpdateAudioSchema,
   requestSchemaValidator,
+  idTokenValidator,
   podcastController.updateOnePodcastAudio
 );
 
@@ -47,9 +49,16 @@ router.put(
   "/:podcastId/image",
   PodcastSchema.UpdateImageSchema,
   requestSchemaValidator,
+  idTokenValidator,
   podcastController.updateOnePodcastImage
 );
 
-router.delete("/:podcastId", podcastController.deleteOnePodcast);
+router.delete(
+  "/:podcastId",
+  PodcastSchema.DeletePodcastSchema,
+  requestSchemaValidator,
+  idTokenValidator,
+  podcastController.deleteOnePodcast
+);
 
 export default router;

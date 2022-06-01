@@ -1,9 +1,11 @@
+import { FieldValue } from "firebase-admin/firestore";
 import { FileType, Podcast, Podcasts } from "../commons";
 import {
   ImagesStorage,
   PodcastsCollection,
   PodcastsStorage,
   UploadsCollection,
+  UsersCollection,
 } from "../database/db";
 
 const getAllPodcasts = async () => {
@@ -49,6 +51,14 @@ const addOnePodcast = async (
   newPodcast: Podcast
 ) => {
   try {
+    const userRes = await UsersCollection.doc(newPodcast.artistId).get();
+    if (!userRes.exists) {
+      throw {
+        status: 403,
+        message: "User not authorized.",
+      };
+    }
+
     const podcastRes = await UploadsCollection.doc(podcastUploadId).get();
     if (!podcastRes.exists) {
       throw {
@@ -92,6 +102,18 @@ const addOnePodcast = async (
     newPodcast.imgPath = imageFilepath;
 
     const data = await PodcastsCollection.add(newPodcast);
+
+    // Update in user account
+    await UsersCollection.doc(newPodcast.artistId)
+      .update({
+        creations: FieldValue.arrayUnion(data.id),
+      })
+      .catch(async (err) => {
+        await PodcastsCollection.doc(data.id).delete();
+        throw { status: err?.status || 500, message: err?.message || err };
+      });
+
+    // Remove the uploads
     await UploadsCollection.doc(podcastUploadId)
       .delete()
       .catch(async (err) => {
@@ -126,9 +148,15 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
+    if (updatedPodcast.artistId != artistId) {
+      throw {
+        status: 403,
+        message: `User does not have access to podcast ${podcastId}`,
+      };
+    }
+
     updatedPodcast.path = path;
     updatedPodcast.imgPath = imgPath;
-    updatedPodcast.artistId = artistId;
 
     await PodcastsCollection.doc(podcastId).update(updatedPodcast);
 
@@ -140,7 +168,8 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
 
 const updateOnePodcastAudio = async (
   podcastId: string,
-  updatedPodcastUploadId: string
+  updatedPodcastUploadId: string,
+  userId: string
 ) => {
   try {
     const podcastRes = await UploadsCollection.doc(
@@ -172,6 +201,13 @@ const updateOnePodcastAudio = async (
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
+    if (userId != res.data()?.artistId) {
+      throw {
+        status: 403,
+        message: `User does not have access to podcast ${podcastId}`,
+      };
+    }
+
     const oldPodcastFilepath = res.data()?.path;
     if (oldPodcastFilepath == undefined) {
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
@@ -197,7 +233,8 @@ const updateOnePodcastAudio = async (
 
 const updateOnePodcastImage = async (
   podcastId: string,
-  updatedImageUploadId: string
+  updatedImageUploadId: string,
+  userId: string
 ) => {
   try {
     const imageRes = await UploadsCollection.doc(updatedImageUploadId).get();
@@ -225,6 +262,13 @@ const updateOnePodcastImage = async (
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
+    if (userId != res.data()?.artistId) {
+      throw {
+        status: 403,
+        message: `User does not have access to podcast ${podcastId}`,
+      };
+    }
+
     const oldImageFilepath = res.data()?.imgPath;
     if (oldImageFilepath == undefined) {
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
@@ -247,11 +291,18 @@ const updateOnePodcastImage = async (
   }
 };
 
-const deleteOnePodcast = async (podcastId: string) => {
+const deleteOnePodcast = async (podcastId: string, userId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
+    }
+
+    if (userId != res.data()?.artistId) {
+      throw {
+        status: 403,
+        message: `User does not have access to podcast ${podcastId}`,
+      };
     }
 
     const filepath = res.data()?.path;
@@ -262,6 +313,11 @@ const deleteOnePodcast = async (podcastId: string) => {
     }
 
     await PodcastsCollection.doc(podcastId).delete();
+
+    // Update in user account
+    await UsersCollection.doc(userId).update({
+      creations: FieldValue.arrayRemove(podcastId),
+    });
 
     return { status: "OK", message: "Your podcast has been removed." };
   } catch (err: any) {
