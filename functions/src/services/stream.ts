@@ -1,11 +1,21 @@
 import { generateV4ReadSignedUrlOneMinute } from "../commons";
 import { PodcastsCollection } from "../database/db";
 
-const streamOnePodcast = async (podcastId: string) => {
+const streamOnePodcast = async (podcastId: string, userId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
     if (!res.exists) {
       throw { status: 404, message: `Podcast id ${podcastId} not found.` };
+    }
+
+    if (
+      res.data()?.public == false &&
+      userId.localeCompare(res.data()?.artistId || "") != 0
+    ) {
+      throw {
+        status: 403,
+        message: `You do not have access to podcast ${podcastId}`,
+      };
     }
 
     const filepath = res.data()?.path;

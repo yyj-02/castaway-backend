@@ -127,7 +127,7 @@ const UpdateImageSchema = [
     .withMessage("Image upload id must not be empty."),
 ];
 
-const DeletePodcastSchema = [
+const IdTokenSchema = [
   check("idToken")
     .isString()
     .withMessage("Id token must be a string.")
@@ -143,5 +143,5 @@ export default {
   UpdatePodcastSchema,
   UpdateAudioSchema,
   UpdateImageSchema,
-  DeletePodcastSchema,
+  IdTokenSchema,
 };

@@ -19,7 +19,13 @@ router.get(
   podcastController.getOnePodcast
 );
 
-router.get("/:podcastId/stream", streamController.streamOnePodcast);
+router.get(
+  "/:podcastId/stream",
+  PodcastSchema.IdTokenSchema,
+  requestSchemaValidator,
+  idTokenValidator,
+  streamController.streamOnePodcast
+);
 
 router.post(
   "/",
@@ -55,7 +61,7 @@ router.put(
 
 router.delete(
   "/:podcastId",
-  PodcastSchema.DeletePodcastSchema,
+  PodcastSchema.IdTokenSchema,
   requestSchemaValidator,
   idTokenValidator,
   podcastController.deleteOnePodcast

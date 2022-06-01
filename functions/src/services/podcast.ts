@@ -51,14 +51,6 @@ const addOnePodcast = async (
   newPodcast: Podcast
 ) => {
   try {
-    const userRes = await UsersCollection.doc(newPodcast.artistId).get();
-    if (!userRes.exists) {
-      throw {
-        status: 403,
-        message: "User not authorized.",
-      };
-    }
-
     const podcastRes = await UploadsCollection.doc(podcastUploadId).get();
     if (!podcastRes.exists) {
       throw {
