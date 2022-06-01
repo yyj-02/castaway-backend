@@ -1,6 +1,25 @@
 import { check } from "express-validator";
 
-const PostSchema = [
+const GetOnePodcastSchema = [
+  check("idToken")
+    .optional()
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+];
+
+const PostPodcastSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("podcastUploadId")
     .isString()
     .withMessage("Podcast upload id must be a string.")
@@ -40,7 +59,15 @@ const PostSchema = [
   check("public").isBoolean().withMessage("Public must be a boolean."),
 ];
 
-const UpdateSchema = [
+const UpdatePodcastSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("title")
     .isString()
     .withMessage("Title must be a string.")
@@ -65,6 +92,14 @@ const UpdateSchema = [
 ];
 
 const UpdateAudioSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("updatedPodcastUploadId")
     .isString()
     .withMessage("Podcast upload id must be a string.")
@@ -75,6 +110,14 @@ const UpdateAudioSchema = [
 ];
 
 const UpdateImageSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+
   check("updatedImageUploadId")
     .isString()
     .withMessage("Image upload id must be a string.")
@@ -84,9 +127,21 @@ const UpdateImageSchema = [
     .withMessage("Image upload id must not be empty."),
 ];
 
+const IdTokenSchema = [
+  check("idToken")
+    .isString()
+    .withMessage("Id token must be a string.")
+    .bail()
+    .trim()
+    .notEmpty()
+    .withMessage("Id token must not be empty."),
+];
+
 export default {
-  PostSchema,
-  UpdateSchema,
+  GetOnePodcastSchema,
+  PostPodcastSchema,
+  UpdatePodcastSchema,
   UpdateAudioSchema,
   UpdateImageSchema,
+  IdTokenSchema,
 };

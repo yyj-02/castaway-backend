@@ -5,9 +5,12 @@ const streamOnePodcast = async (req: Request, res: Response) => {
   const {
     params: { podcastId },
   } = req;
+  const {
+    locals: { userId },
+  } = res;
 
   try {
-    const data = await streamService.streamOnePodcast(podcastId);
+    const data = await streamService.streamOnePodcast(podcastId, userId);
     res.json(data);
   } catch (err: any) {
     res

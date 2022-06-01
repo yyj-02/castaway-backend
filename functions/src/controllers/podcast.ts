@@ -17,9 +17,12 @@ const getOnePodcast = async (req: Request, res: Response) => {
   const {
     params: { podcastId },
   } = req;
+  const {
+    locals: { userId },
+  } = res;
 
   try {
-    const data = await podcastService.getOnePodcast(podcastId);
+    const data = await podcastService.getOnePodcast(podcastId, userId);
     res.json(data);
   } catch (err: any) {
     res
@@ -31,13 +34,17 @@ const getOnePodcast = async (req: Request, res: Response) => {
 const addOnePodcast = async (req: Request, res: Response) => {
   const { body } = req;
   const { podcastUploadId, imageUploadId } = body;
+  const {
+    locals: { userId },
+  } = res;
+
   const newPodcast: Podcast = {
     title: body.title,
     description: body.description,
     durationInMinutes: 0,
     path: "empty",
     imgPath: "empty",
-    artistId: "Sample Artist",
+    artistId: userId,
     genres: body.genres,
     public: body.public,
   };
@@ -48,6 +55,7 @@ const addOnePodcast = async (req: Request, res: Response) => {
       imageUploadId,
       newPodcast
     );
+
     res.json(data);
   } catch (err: any) {
     res
@@ -61,13 +69,17 @@ const updateOnePodcast = async (req: Request, res: Response) => {
     body,
     params: { podcastId },
   } = req;
+  const {
+    locals: { userId },
+  } = res;
+
   const updatedPodcast = {
     title: body.title,
     description: body.description,
     durationInMinutes: 0,
     path: "",
     imgPath: "",
-    artistId: "",
+    artistId: userId,
     genres: body.genres,
     public: body.public,
   };
@@ -90,11 +102,15 @@ const updateOnePodcastAudio = async (req: Request, res: Response) => {
     body: { updatedPodcastUploadId },
     params: { podcastId },
   } = req;
+  const {
+    locals: { userId },
+  } = res;
 
   try {
     const data = await podcastService.updateOnePodcastAudio(
       podcastId,
-      updatedPodcastUploadId
+      updatedPodcastUploadId,
+      userId
     );
     res.json(data);
   } catch (err: any) {
@@ -109,11 +125,15 @@ const updateOnePodcastImage = async (req: Request, res: Response) => {
     body: { updatedImageUploadId },
     params: { podcastId },
   } = req;
+  const {
+    locals: { userId },
+  } = res;
 
   try {
     const data = await podcastService.updateOnePodcastImage(
       podcastId,
-      updatedImageUploadId
+      updatedImageUploadId,
+      userId
     );
     res.json(data);
   } catch (err: any) {
@@ -128,8 +148,11 @@ const deleteOnePodcast = async (req: Request, res: Response) => {
     const {
       params: { podcastId },
     } = req;
+    const {
+      locals: { userId },
+    } = res;
 
-    const data = await podcastService.deleteOnePodcast(podcastId);
+    const data = await podcastService.deleteOnePodcast(podcastId, userId);
     res.json(data);
   } catch (err: any) {
     res
