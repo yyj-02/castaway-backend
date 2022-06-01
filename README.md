@@ -106,6 +106,10 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 - (live) https://us-central1-castaway-819d7.cloudfunctions.net/app
 - (emulator) http://127.0.0.1:5001/castaway-819d7/us-central1/app
 
+<br>
+
+### Authentication
+
 <details>
 <summary><h3 style="display: inline;">Create an account</h3></summary>
 
@@ -185,4 +189,119 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 | refreshToken | string | The refresh token, to be used to retrieve a new id token.    |
 | expiresIn    | number | The duration whereby this id token is valid                  |
 | displayName  | string | The display name for the account                             |
+</details>
+
+<br>
+
+### Podcast
+
+The process of creating a podcast involves uploading an audio file, followed by an image file and lastly adding the podcast details.
+
+<details>
+<summary><h3 style="display: inline;">Upload an audio file</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** multipart/form-data
+
+**Endpoint:**
+```
+{appUrl}/uploads/podcasts
+```
+
+**Request payload:**
+| Property |  Type  | Description                        |
+| -------- | :----: | :--------------------------------- |
+| idToken  | string | The latest id token                |
+| podcast  |  file  | An audio file in the format of mp3 |
+
+**Response payload:**
+| Property        |  Type  | Description                                                 |
+| --------------- | :----: | :---------------------------------------------------------- |
+| podcastUploadId | string | The id for the upload, to be used when creating the podcast |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Upload an image file</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** multipart/form-data
+
+**Endpoint:**
+```
+{appUrl}/uploads/images
+```
+
+**Request payload:**
+| Property |  Type  | Description                                 |
+| -------- | :----: | :------------------------------------------ |
+| idToken  | string | The latest id token                         |
+| image    |  file  | An image file in the format of png/jpg/jpeg |
+
+**Response payload:**
+| Property      |  Type  | Description                                                 |
+| ------------- | :----: | :---------------------------------------------------------- |
+| imageUploadId | string | The id for the upload, to be used when creating the podcast |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Create podcast</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts
+```
+
+**Request payload:**
+| Property        |  Type   | Description                            |
+| --------------- | :-----: | :------------------------------------- |
+| idToken         | string  | The latest id token                    |
+| podcastUploadId | string  | The upload id of the audio file        |
+| imageUploadId   | string  | The upload id of the image file        |
+| title           | string  | The title for the podcast              |
+| description     | string  | A description for the podcast          |
+| genres          |  array  | An array of string denoting the genres |
+| public          | boolean | The accessibility of the podcast       |
+
+
+**Response payload:**
+| Property  |  Type  | Description                                                            |
+| --------- | :----: | :--------------------------------------------------------------------- |
+| podcastId | string | The id for the podcast, to be used to access/update/delete the podcast |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Access podcast details</h3></summary>
+
+**Method:** GET
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId
+```
+
+**Request payload:**
+| Property |  Type  | Description                                                            |
+| -------- | :----: | :--------------------------------------------------------------------- |
+| idToken  | string | (Optional) The latest id token, required if the podcast set to private |
+
+
+**Response payload:**
+| Property          |  Type   | Description                                         |
+| ----------------- | :-----: | :-------------------------------------------------- |
+| title             | string  | The title of the podcast                            |
+| description       | string  | The description of the podcast                      |
+| path              | string  | *Useless shit I haven't deleted                     |
+| imgPath           | string  | *Useless shit I haven't deleted                     |
+| durationInMinutes | number  | The duration of the podcast                         |
+| artistId          | string  | *Now a meaningless id, to be changed to artist name |
+| genres            |  array  | The genres of the podcast                           |
+| public            | boolean | The accessibility of the podcast                    |
 </details>
