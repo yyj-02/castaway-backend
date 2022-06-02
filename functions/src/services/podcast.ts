@@ -59,6 +59,13 @@ const addOnePodcast = async (
       };
     }
 
+    if (podcastRes.data()?.userId != newPodcast.artistId) {
+      throw {
+        status: 403,
+        message: `User does not have access to upload ${podcastUploadId}`,
+      };
+    }
+
     const podcastFilepath = podcastRes.data()?.filepath;
     const podcastFiletype = podcastRes.data()?.filetype;
     const durationInMinutes = podcastRes.data()?.durationInMinutes;
@@ -80,6 +87,13 @@ const addOnePodcast = async (
       throw {
         status: 404,
         message: `Image upload ${imageUploadId} not found.`,
+      };
+    }
+
+    if (imageRes.data()?.userId != newPodcast.artistId) {
+      throw {
+        status: 403,
+        message: `User does not have access to upload ${imageUploadId}`,
       };
     }
 
@@ -174,6 +188,13 @@ const updateOnePodcastAudio = async (
       };
     }
 
+    if (podcastRes.data()?.userId != userId) {
+      throw {
+        status: 403,
+        message: `User does not have access to upload ${updatedPodcastUploadId}`,
+      };
+    }
+
     const updatedPodcastFilepath = podcastRes.data()?.filepath;
     const updatedPodcastFiletype = podcastRes.data()?.filetype;
     const updatedDurationInMinutes = podcastRes.data()?.durationInMinutes;
@@ -234,6 +255,13 @@ const updateOnePodcastImage = async (
       throw {
         status: 404,
         message: `IMage upload ${updatedImageUploadId} not found.`,
+      };
+    }
+
+    if (imageRes.data()?.userId != userId) {
+      throw {
+        status: 403,
+        message: `User does not have access to upload ${updatedImageUploadId}`,
       };
     }
 

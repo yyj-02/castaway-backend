@@ -77,7 +77,7 @@ const updateOneUpload = async (uploadId: string, updatedUpload: Upload) => {
     if (res.data()?.userId != updatedData.userId) {
       throw {
         status: 403,
-        message: `You do not have access to upload ${uploadId} not found.`,
+        message: `You do not have access to upload ${uploadId}.`,
       };
     }
 

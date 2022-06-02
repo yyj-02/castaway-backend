@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", podcastController.getAllPodcasts);
 
 router.post(
-  "/:podcastId",
+  "/:podcastId/info",
   PodcastSchema.GetOnePodcastSchema,
   requestSchemaValidator,
   idTokenValidator,
@@ -59,8 +59,8 @@ router.put(
   podcastController.updateOnePodcastImage
 );
 
-router.delete(
-  "/:podcastId",
+router.post(
+  "/:podcastId/delete",
   PodcastSchema.IdTokenSchema,
   requestSchemaValidator,
   idTokenValidator,

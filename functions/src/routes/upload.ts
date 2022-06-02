@@ -21,8 +21,8 @@ router.put(
   uploadController.updateOneUpload
 );
 
-router.delete(
-  "/podcasts/:uploadId",
+router.post(
+  "/podcasts/:uploadId/delete",
   UploadSchema.IdTokenSchema,
   requestSchemaValidator,
   idTokenValidator,
@@ -42,8 +42,8 @@ router.put(
   uploadController.updateOneUpload
 );
 
-router.delete(
-  "/images/:uploadId",
+router.post(
+  "/images/:uploadId/delete",
   UploadSchema.IdTokenSchema,
   requestSchemaValidator,
   idTokenValidator,

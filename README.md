@@ -110,6 +110,8 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 
 ### Authentication
 
+A successful login or account creation will grant user an id token, similar to a cookie in browser, and a refresh token. The id token will allow user to use any of the listed services without sign in within a certain duration. After which, user need to exchange the refresh token for a new id token.
+
 <details>
 <summary><h3 style="display: inline;">Create an account</h3></summary>
 
@@ -195,10 +197,10 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 
 ### Podcast
 
-The process of creating a podcast involves uploading an audio file, followed by an image file and lastly adding the podcast details.
+The process of creating a podcast entails uploading an audio file, followed by an image file and lastly adding the podcast details.
 
 <details>
-<summary><h3 style="display: inline;">Upload an audio file</h3></summary>
+<summary><h3 style="display: inline;">Upload audio file</h3></summary>
 
 **Method:** POST
 
@@ -222,7 +224,7 @@ The process of creating a podcast involves uploading an audio file, followed by 
 </details>
 
 <details>
-<summary><h3 style="display: inline;">Upload an image file</h3></summary>
+<summary><h3 style="display: inline;">Upload image file</h3></summary>
 
 **Method:** POST
 
@@ -268,7 +270,6 @@ The process of creating a podcast involves uploading an audio file, followed by 
 | genres          |  array  | An array of string denoting the genres |
 | public          | boolean | The accessibility of the podcast       |
 
-
 **Response payload:**
 | Property  |  Type  | Description                                                            |
 | --------- | :----: | :--------------------------------------------------------------------- |
@@ -284,14 +285,13 @@ The process of creating a podcast involves uploading an audio file, followed by 
 
 **Endpoint:**
 ```
-{appUrl}/podcasts/:podcastId
+{appUrl}/podcasts/:podcastId/info
 ```
 
 **Request payload:**
 | Property |  Type  | Description                                                            |
 | -------- | :----: | :--------------------------------------------------------------------- |
 | idToken  | string | (Optional) The latest id token, required if the podcast set to private |
-
 
 **Response payload:**
 | Property          |  Type   | Description                                         |
@@ -323,10 +323,213 @@ The process of creating a podcast involves uploading an audio file, followed by 
 | -------- | :----: | :------------------ |
 | idToken  | string | The latest id token |
 
-
 **Response payload:**
 | Property   |  Type  | Description                          |
 | ---------- | :----: | :----------------------------------- |
 | podcastUrl | string | The url to stream the mp3 file       |
 | message    | string | The duration before the link expires |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Delete podcast</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId/delete
+```
+
+**Request payload:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Response payload:**
+| Property |  Type  | Description                                |
+| -------- | :----: | :----------------------------------------- |
+| status   | string | Should be "OK"                             |
+| message  | string | Should be "Your podcast has been removed." |
+</details>
+
+<br>
+
+To update the upload file or podcast, choose the appropriate route below and provide the latest id token and the relevant upload id or podcast id.
+
+<details>
+<summary><h3 style="display: inline;">Update audio file upload</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** multipart/form-data
+
+**Endpoint:**
+```
+{appUrl}/uploads/podcasts/:podcastUploadId
+```
+
+**Request payload:**
+| Property |  Type  | Description                                 |
+| -------- | :----: | :------------------------------------------ |
+| idToken  | string | The latest id token                         |
+| podcast  |  file  | The updated audio file in the format of mp3 |
+
+**Response payload:**
+| Property |  Type  | Description                               |
+| -------- | :----: | :---------------------------------------- |
+| status   | string | Should be "OK"                            |
+| message  | string | Should be "Your upload has been updated." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Update image file upload</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** multipart/form-data
+
+**Endpoint:**
+```
+{appUrl}/uploads/images/:imageUploadId
+```
+
+**Request payload:**
+| Property |  Type  | Description                                          |
+| -------- | :----: | :--------------------------------------------------- |
+| idToken  | string | The latest id token                                  |
+| image    |  file  | The updated image file in the format of png/jpg/jpeg |
+
+**Response payload:**
+| Property |  Type  | Description                               |
+| -------- | :----: | :---------------------------------------- |
+| status   | string | Should be "OK"                            |
+| message  | string | Should be "Your upload has been updated." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Delete audio file</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/uploads/podcasts/:podcastUploadId/delete
+```
+
+**Request payload:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Response payload:**
+| Property |  Type  | Description                               |
+| -------- | :----: | :---------------------------------------- |
+| status   | string | Should be "OK"                            |
+| message  | string | Should be "Your upload has been deleted." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Delete image file</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/uploads/images/:imageUploadId/delete
+```
+
+**Request payload:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Response payload:**
+| Property |  Type  | Description                               |
+| -------- | :----: | :---------------------------------------- |
+| status   | string | Should be "OK"                            |
+| message  | string | Should be "Your upload has been deleted." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Update podcast details</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId
+```
+
+**Request payload:**
+| Property    |  Type   | Description                              |
+| ----------- | :-----: | :--------------------------------------- |
+| idToken     | string  | The latest id token                      |
+| title       | string  | The updated title                        |
+| description | string  | The updated description                  |
+| genres      |  array  | The updated list of genres               |
+| public      | boolean | The updated accessibility of the podcast |
+
+**Response payload:**
+| Property |  Type  | Description                                |
+| -------- | :----: | :----------------------------------------- |
+| status   | string | Should be "OK"                             |
+| message  | string | Should be "Your podcast has been updated." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Update podcast audio file</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId/podcast
+```
+
+**Request payload:**
+| Property               |  Type  | Description                             |
+| ---------------------- | :----: | :-------------------------------------- |
+| idToken                | string | The latest id token                     |
+| updatedPodcastUploadId | string | The upload id of the updated audio file |
+
+**Response payload:**
+| Property |  Type  | Description                                            |
+| -------- | :----: | :----------------------------------------------------- |
+| status   | string | Should be "OK"                                         |
+| message  | string | Should be "Your podcast audio track has been updated." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Update podcast image file</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId/image
+```
+
+**Request payload:**
+| Property             |  Type  | Description                             |
+| -------------------- | :----: | :-------------------------------------- |
+| idToken              | string | The latest id token                     |
+| updatedImageUploadId | string | The upload id of the updated image file |
+
+**Response payload:**
+| Property |  Type  | Description                                            |
+| -------- | :----: | :----------------------------------------------------- |
+| status   | string | Should be "OK"                                         |
+| message  | string | Should be "Your podcast cover image has been updated." |
 </details>
