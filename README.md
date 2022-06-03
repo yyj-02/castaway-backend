@@ -107,8 +107,8 @@ npm run deploy
 
 Let {appUrl} denotes the url of the cloud function entry point, e.g.
 
-- (live) https://us-central1-castaway-819d7.cloudfunctions.net/app
-- (emulator) http://127.0.0.1:5001/castaway-819d7/us-central1/app
+- (live) https://us-central1-castaway-819d7.cloudfunctions.net/app/api
+- (emulator) http://127.0.0.1:5001/castaway-819d7/us-central1/app/api
 
 <br>
 
