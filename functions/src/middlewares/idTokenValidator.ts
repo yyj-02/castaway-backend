@@ -22,9 +22,13 @@ const idTokenValidator = async (
       // Passing the user id to the next function
       res.locals.userId = userId;
     } catch (err: any) {
+      res.json({
+        status: err.status || 404,
+        message: err.message || "User not found.",
+      });
       throw {
         status: err.status || 404,
-        message: err.message || "Failed to get user id.",
+        message: err.message || "User not found.",
       };
     }
   } else {

@@ -145,7 +145,7 @@ const deleteOneUpload = async (uploadId: string, userId: string) => {
     if (res.data()?.userId != userId) {
       throw {
         status: 403,
-        message: `You do not have access to upload ${uploadId} not found.`,
+        message: `You do not have access to upload ${uploadId}.`,
       };
     }
 

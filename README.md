@@ -537,3 +537,19 @@ To update the upload file or podcast, choose the appropriate route below and pro
 | status   | string | Should be "OK"                                         |
 | message  | string | Should be "Your podcast cover image has been updated." |
 </details>
+
+<br>
+
+## TODO
+
+- [x] CRUD for podcast
+- [x] Cloud storage and syncing with Firestore
+- [x] Stream link using signed url
+- [x] Authentication and authorization
+- [ ] Add user profile CRUD
+- [ ] Provide artist name instead of artist id
+- [ ] Provide image link instead of image id
+- [ ] Remove podcast id in GET
+- [ ] Cloud messaging
+- [ ] WebRTC
+- [ ] Add reset password option
