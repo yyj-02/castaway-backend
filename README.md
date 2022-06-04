@@ -180,7 +180,7 @@ A successful login or account creation will grant user an id token, similar to a
 
 **Endpoint:**
 ```
-{appUrl}/auth/login
+{appUrl}/auth/refreshToken
 ```
 
 **Request payload:**
