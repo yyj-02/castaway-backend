@@ -334,7 +334,6 @@ An array of podcasts with the following properties:
 **Response payload:**
 | Property          |  Type   | Description                                  |
 | ----------------- | :-----: | :------------------------------------------- |
-| podcastId         | string  | The id of the podcast                        |
 | title             | string  | The title of the podcast                     |
 | description       | string  | The description of the podcast               |
 | artistName        | string  | The name of the artist                       |
@@ -586,10 +585,10 @@ To be continue
 - [x] Cloud storage and syncing with Firestore
 - [x] Stream link using signed url
 - [x] Authentication and authorization
-- [ ] Add user profile CRUD
 - [x] Provide artist name instead of artist id
 - [x] Provide image link instead of image id
-- [ ] Remove podcast id in GET
+- [x] Remove podcast id in GET
+- [ ] Add user profile CRUD
 - [ ] Cloud messaging
 - [ ] WebRTC
 - [ ] Add reset password option

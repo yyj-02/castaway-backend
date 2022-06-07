@@ -71,7 +71,6 @@ const getOnePodcast = async (podcastId: string, userId: string) => {
     }
 
     const podcast = {
-      podcastId: res.id,
       title: res.data()?.title,
       description: res.data()?.description,
       artistName: res.data()?.artistName,
