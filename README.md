@@ -303,14 +303,15 @@ The process of creating a podcast entails uploading an audio file, followed by a
 **Response payload:**
 An array of podcasts with the following properties:
 
-| Property          |  Type  | Description                    |
-| ----------------- | :----: | :----------------------------- |
-| podcastId         | string | The id of the podcast          |
-| title             | string | The title of the podcast       |
-| description       | string | The description of the podcast |
-| durationInMinutes | number | The duration of the podcast    |
-| artistName        | string | The name of the artist         |
-| genres            | array  | The genres of the podcast      |
+| Property          |  Type  | Description                                  |
+| ----------------- | :----: | :------------------------------------------- |
+| podcastId         | string | The id of the podcast                        |
+| title             | string | The title of the podcast                     |
+| description       | string | The description of the podcast               |
+| artistName        | string | The name of the artist                       |
+| durationInMinutes | number | The duration of the podcast                  |
+| imgUrl            | string | The cover image url that expires in one hour |
+| genres            | array  | The genres of the podcast                    |
 </details>
 
 <details>
@@ -331,15 +332,16 @@ An array of podcasts with the following properties:
 | idToken  | string | (Optional) The latest id token, required if the podcast set to private |
 
 **Response payload:**
-| Property          |  Type   | Description                      |
-| ----------------- | :-----: | :------------------------------- |
-| podcastId         | string  | The id of the podcast            |
-| title             | string  | The title of the podcast         |
-| description       | string  | The description of the podcast   |
-| durationInMinutes | number  | The duration of the podcast      |
-| artistName        | string  | The name of the artist           |
-| genres            |  array  | The genres of the podcast        |
-| public            | boolean | The accessibility of the podcast |
+| Property          |  Type   | Description                                  |
+| ----------------- | :-----: | :------------------------------------------- |
+| podcastId         | string  | The id of the podcast                        |
+| title             | string  | The title of the podcast                     |
+| description       | string  | The description of the podcast               |
+| artistName        | string  | The name of the artist                       |
+| durationInMinutes | number  | The duration of the podcast                  |
+| imgUrl            | string  | The cover image url that expires in one hour |
+| genres            |  array  | The genres of the podcast                    |
+| public            | boolean | The accessibility of the podcast             |
 </details>
 
 <details>
@@ -586,7 +588,7 @@ To be continue
 - [x] Authentication and authorization
 - [ ] Add user profile CRUD
 - [x] Provide artist name instead of artist id
-- [ ] Provide image link instead of image id
+- [x] Provide image link instead of image id
 - [ ] Remove podcast id in GET
 - [ ] Cloud messaging
 - [ ] WebRTC

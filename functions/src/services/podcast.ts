@@ -1,5 +1,11 @@
 import { FieldValue } from "firebase-admin/firestore";
-import { FileType, Genres, Podcast, Podcasts } from "../commons";
+import {
+  FileType,
+  generateV4ReadSignedUrlOneHour,
+  Genres,
+  Podcast,
+  Podcasts,
+} from "../commons";
 import {
   ImagesStorage,
   PodcastsCollection,
@@ -20,15 +26,23 @@ const getAllPodcasts = async () => {
       genres: Genres;
       podcastId: string;
     }[] = [];
-    res.forEach((doc) => {
-      const { title, description, artistName, durationInMinutes, genres } =
-        doc.data();
+    res.forEach(async (doc) => {
+      const {
+        title,
+        description,
+        artistName,
+        durationInMinutes,
+        genres,
+        imgPath,
+      } = doc.data();
+      const imgUrl = await generateV4ReadSignedUrlOneHour(imgPath);
       const podcast = {
         podcastId: doc.id,
         title,
         description,
         artistName,
         durationInMinutes,
+        imgUrl,
         genres,
       };
       data.push(podcast);
@@ -62,6 +76,7 @@ const getOnePodcast = async (podcastId: string, userId: string) => {
       description: res.data()?.description,
       artistName: res.data()?.artistName,
       durationInMinutes: res.data()?.durationInMinutes,
+      imgUrl: await generateV4ReadSignedUrlOneHour(res.data()?.imgPath || "-"),
       genres: res.data()?.genres,
       public: res.data()?.public,
     };
