@@ -42,9 +42,10 @@ const addOnePodcast = async (req: Request, res: Response) => {
     title: body.title,
     description: body.description,
     durationInMinutes: 0,
-    path: "empty",
-    imgPath: "empty",
+    path: "",
+    imgPath: "",
     artistId: userId,
+    artistName: "",
     genres: body.genres,
     public: body.public,
   };
@@ -73,13 +74,14 @@ const updateOnePodcast = async (req: Request, res: Response) => {
     locals: { userId },
   } = res;
 
-  const updatedPodcast = {
+  const updatedPodcast: Podcast = {
     title: body.title,
     description: body.description,
     durationInMinutes: 0,
     path: "",
     imgPath: "",
     artistId: userId,
+    artistName: "",
     genres: body.genres,
     public: body.public,
   };

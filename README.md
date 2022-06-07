@@ -289,6 +289,31 @@ The process of creating a podcast entails uploading an audio file, followed by a
 </details>
 
 <details>
+<summary><h3 style="display: inline;">Get all podcasts</h3></summary>
+
+**Method:** GET
+
+**Content-Type:** none
+
+**Endpoint:**
+```
+{appUrl}/podcasts/:podcastId/info
+```
+
+**Response payload:**
+An array of podcasts with the following properties:
+
+| Property          |  Type  | Description                    |
+| ----------------- | :----: | :----------------------------- |
+| podcastId         | string | The id of the podcast          |
+| title             | string | The title of the podcast       |
+| description       | string | The description of the podcast |
+| durationInMinutes | number | The duration of the podcast    |
+| artistName        | string | The name of the artist         |
+| genres            | array  | The genres of the podcast      |
+</details>
+
+<details>
 <summary><h3 style="display: inline;">Access podcast details</h3></summary>
 
 **Method:** POST
@@ -306,16 +331,15 @@ The process of creating a podcast entails uploading an audio file, followed by a
 | idToken  | string | (Optional) The latest id token, required if the podcast set to private |
 
 **Response payload:**
-| Property          |  Type   | Description                                         |
-| ----------------- | :-----: | :-------------------------------------------------- |
-| title             | string  | The title of the podcast                            |
-| description       | string  | The description of the podcast                      |
-| path              | string  | *Useless shit I haven't deleted                     |
-| imgPath           | string  | *Useless shit I haven't deleted                     |
-| durationInMinutes | number  | The duration of the podcast                         |
-| artistId          | string  | *Now a meaningless id, to be changed to artist name |
-| genres            |  array  | The genres of the podcast                           |
-| public            | boolean | The accessibility of the podcast                    |
+| Property          |  Type   | Description                      |
+| ----------------- | :-----: | :------------------------------- |
+| podcastId         | string  | The id of the podcast            |
+| title             | string  | The title of the podcast         |
+| description       | string  | The description of the podcast   |
+| durationInMinutes | number  | The duration of the podcast      |
+| artistName        | string  | The name of the artist           |
+| genres            |  array  | The genres of the podcast        |
+| public            | boolean | The accessibility of the podcast |
 </details>
 
 <details>
@@ -561,7 +585,7 @@ To be continue
 - [x] Stream link using signed url
 - [x] Authentication and authorization
 - [ ] Add user profile CRUD
-- [ ] Provide artist name instead of artist id
+- [x] Provide artist name instead of artist id
 - [ ] Provide image link instead of image id
 - [ ] Remove podcast id in GET
 - [ ] Cloud messaging

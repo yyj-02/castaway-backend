@@ -1,5 +1,5 @@
 import { FieldValue } from "firebase-admin/firestore";
-import { FileType, Podcast, Podcasts } from "../commons";
+import { FileType, Genres, Podcast, Podcasts } from "../commons";
 import {
   ImagesStorage,
   PodcastsCollection,
@@ -13,8 +13,26 @@ const getAllPodcasts = async () => {
     const res = await PodcastsCollection.where("public", "==", true).get();
 
     // Putting the data into an array
-    const data: Podcasts = [];
-    res.forEach((doc) => data.push({ podcastId: doc.id, ...doc.data() }));
+    const data: {
+      title: string;
+      description: string;
+      durationInMinutes: number;
+      genres: Genres;
+      podcastId: string;
+    }[] = [];
+    res.forEach((doc) => {
+      const { title, description, artistName, durationInMinutes, genres } =
+        doc.data();
+      const podcast = {
+        podcastId: doc.id,
+        title,
+        description,
+        artistName,
+        durationInMinutes,
+        genres,
+      };
+      data.push(podcast);
+    });
 
     return data;
   } catch (err: any) {
@@ -25,7 +43,6 @@ const getAllPodcasts = async () => {
 const getOnePodcast = async (podcastId: string, userId: string) => {
   try {
     const res = await PodcastsCollection.doc(podcastId).get();
-    console.log(res.data());
     if (!res.exists) {
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
@@ -39,7 +56,17 @@ const getOnePodcast = async (podcastId: string, userId: string) => {
       };
     }
 
-    return res.data();
+    const podcast = {
+      podcastId: res.id,
+      title: res.data()?.title,
+      description: res.data()?.description,
+      artistName: res.data()?.artistName,
+      durationInMinutes: res.data()?.durationInMinutes,
+      genres: res.data()?.genres,
+      public: res.data()?.public,
+    };
+
+    return podcast;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -105,7 +132,11 @@ const addOnePodcast = async (
         message: `Image upload ${imageUploadId} not found.`,
       };
     }
+
     newPodcast.imgPath = imageFilepath;
+
+    const artistDoc = await UsersCollection.doc(newPodcast.artistId).get();
+    newPodcast.artistName = artistDoc.data()?.displayName || "";
 
     const data = await PodcastsCollection.add(newPodcast);
 

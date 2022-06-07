@@ -6,6 +6,7 @@ export interface Podcast {
   imgPath: string;
   durationInMinutes: number;
   artistId: string;
+  artistName: string;
   genres: Genres;
   public: boolean;
 }
