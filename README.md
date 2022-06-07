@@ -19,7 +19,7 @@
 
 </div>
 
-## Getting started
+## Getting Started
 
 Castaway is a podcast app that serves contents from your favorite content creators on iPhone and Android. This project is written in Express and Firebase for the backend and Flutter for the frontend.
 
@@ -102,6 +102,14 @@ npm run serve
 # in functions/
 npm run deploy
 ```
+
+## System Design
+
+![System Design Diagram](assets/system_design.png)
+
+## User Flow
+
+![User Flow Diagram](assets/user_flow.png)
 
 ## Usage
 
