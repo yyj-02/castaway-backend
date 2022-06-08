@@ -14,7 +14,7 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 A successful login or account creation will grant user an id token, similar to a cookie in browser, and a refresh token. The id token will allow user to use any of the listed services without sign in within a certain duration. After which, user need to exchange the refresh token for a new id token.
 
 <details>
-<summary><h3 style="display: inline;">Create an account</h3></summary>
+<summary><h4 style="display: inline;">Create an account</h4></summary>
 
 **Method:** POST
 
