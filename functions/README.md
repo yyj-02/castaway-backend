@@ -1,7 +1,5 @@
 # Castaway API Documentation
 
-## Usage
-
 Let {appUrl} denotes the url of the cloud function entry point, e.g.
 
 - (live) https://us-central1-castaway-819d7.cloudfunctions.net/app/api
@@ -9,12 +7,12 @@ Let {appUrl} denotes the url of the cloud function entry point, e.g.
 
 <br>
 
-### Authentication
+## Authentication
 
 A successful login or account creation will grant user an id token, similar to a cookie in browser, and a refresh token. The id token will allow user to use any of the listed services without sign in within a certain duration. After which, user need to exchange the refresh token for a new id token.
 
 <details>
-<summary><h4 style="display: inline;">Create an account</h4></summary>
+<summary><h3 style="display: inline;">Create an account</h3></summary>
 
 **Method:** POST
 
@@ -96,7 +94,7 @@ A successful login or account creation will grant user an id token, similar to a
 
 <br>
 
-### Podcast
+## Podcast
 
 The process of creating a podcast entails uploading an audio file, followed by an image file and lastly adding the podcast details.
 
@@ -462,7 +460,7 @@ To update the upload file or podcast, choose the appropriate route below and pro
 
 <br>
 
-### User
+## User
 
 <details>
 <summary><h3 style="display: inline;">View profile</h3></summary>
