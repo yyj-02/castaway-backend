@@ -573,9 +573,174 @@ To update the upload file or podcast, choose the appropriate route below and pro
 
 <br>
 
-### Account
+### User
 
-To be continue
+<details>
+<summary><h3 style="display: inline;">View profile</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/info
+```
+
+**Request payload:**
+| Property          |  Type  | Description                                            |
+| ----------------- | :----: | :----------------------------------------------------- |
+| email             | string | The user's email                                       |
+| displayName       | string | The user's display name                                |
+| numberOfCreations | number | The amount of creations by the user                    |
+| numberOfFavorites | number | The amount of podcasts in the user's favorites library |
+
+**Response payload:**
+| Property |  Type  | Description                                            |
+| -------- | :----: | :----------------------------------------------------- |
+| status   | string | Should be "OK"                                         |
+| message  | string | Should be "Your podcast cover image has been updated." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">View creations</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/creations
+```
+
+**Request payload:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Response payload:**
+An array of podcasts with the following properties:
+
+| Property          |  Type   | Description                                  |
+| ----------------- | :-----: | :------------------------------------------- |
+| podcastId         | string  | The id of the podcast                        |
+| title             | string  | The title of the podcast                     |
+| description       | string  | The description of the podcast               |
+| artistName        | string  | The name of the artist                       |
+| durationInMinutes | number  | The duration of the podcast                  |
+| imgUrl            | string  | The cover image url that expires in one hour |
+| genres            |  array  | The genres of the podcast                    |
+| public            | boolean | The accessibility of the podcast             |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">View favorites</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/favorites
+```
+
+**Request payload:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Response payload:**
+An array of podcasts with the following properties:
+
+| Property          |  Type   | Description                                  |
+| ----------------- | :-----: | :------------------------------------------- |
+| podcastId         | string  | The id of the podcast                        |
+| title             | string  | The title of the podcast                     |
+| description       | string  | The description of the podcast               |
+| artistName        | string  | The name of the artist                       |
+| durationInMinutes | number  | The duration of the podcast                  |
+| imgUrl            | string  | The cover image url that expires in one hour |
+| genres            |  array  | The genres of the podcast                    |
+| public            | boolean | The accessibility of the podcast             |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Change display name</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/displayName
+```
+
+**Request payload:**
+| Property           |  Type  | Description          |
+| ------------------ | :----: | :------------------- |
+| idToken            | string | The latest id token  |
+| updatedDisplayName | string | The new display name |
+
+**Response payload:**
+| Property |  Type  | Description                               |
+| -------- | :----: | :---------------------------------------- |
+| status   | string | Should be "OK"                            |
+| message  | string | Should be "Your display name is updated." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Add to favorites</h3></summary>
+
+**Method:** PUT
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/favorites
+```
+
+**Request payload:**
+**Request payload:**
+| Property  |  Type  | Description                                    |
+| --------- | :----: | :--------------------------------------------- |
+| idToken   | string | The latest id token                            |
+| podcastId | string | The id of the podcast to be added to favorites |
+
+**Response payload:**
+| Property |  Type  | Description                                  |
+| -------- | :----: | :------------------------------------------- |
+| status   | string | Should be "OK"                               |
+| message  | string | Should be "Podcast added to your favorites." |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Delete from favorites</h3></summary>
+
+**Method:** DELETE
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/favorites
+```
+
+**Request payload:**
+| Property  |  Type  | Description                                        |
+| --------- | :----: | :------------------------------------------------- |
+| idToken   | string | The latest id token                                |
+| podcastId | string | The id of the podcast to be deleted from favorites |
+
+**Response payload:**
+| Property |  Type  | Description                                     |
+| -------- | :----: | :---------------------------------------------- |
+| status   | string | Should be "OK"                                  |
+| message  | string | Should be "Podcast removed from your favorite." |
+</details>
 
 <br>
 

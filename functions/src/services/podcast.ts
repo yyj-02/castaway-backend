@@ -6,6 +6,7 @@ import {
   Podcast,
 } from "../commons";
 import {
+  firestore,
   ImagesStorage,
   PodcastsCollection,
   PodcastsStorage,
@@ -153,30 +154,16 @@ const addOnePodcast = async (
 
     const data = await PodcastsCollection.add(newPodcast);
 
-    // Update in user account
-    await UsersCollection.doc(newPodcast.artistId)
-      .update({
-        creations: FieldValue.arrayUnion(data.id),
-      })
-      .catch(async (err) => {
-        await PodcastsCollection.doc(data.id).delete();
-        throw { status: err?.status || 500, message: err?.message || err };
-      });
-
-    // Remove the uploads
-    await UploadsCollection.doc(podcastUploadId)
-      .delete()
-      .catch(async (err) => {
-        await PodcastsCollection.doc(data.id).delete();
-        throw { status: err?.status || 500, message: err?.message || err };
-      });
-
-    await UploadsCollection.doc(imageUploadId)
-      .delete()
-      .catch(async (err) => {
-        await PodcastsCollection.doc(data.id).delete();
-        throw { status: err?.status || 500, message: err?.message || err };
-      });
+    const batch = firestore.batch();
+    batch.update(UsersCollection.doc(newPodcast.artistId), {
+      creations: FieldValue.arrayUnion(data.id),
+    });
+    batch.delete(UploadsCollection.doc(podcastUploadId));
+    batch.delete(UploadsCollection.doc(imageUploadId));
+    await batch.commit().catch(async (err) => {
+      await PodcastsCollection.doc(data.id).delete();
+      throw { status: err?.status || 500, message: err?.message || err };
+    });
 
     return { podcastId: data.id };
   } catch (err: any) {
@@ -375,13 +362,12 @@ const deleteOnePodcast = async (podcastId: string, userId: string) => {
       await PodcastsStorage.file(filepath).delete();
       await ImagesStorage.file(imageFilepath).delete();
     }
-
-    await PodcastsCollection.doc(podcastId).delete();
-
-    // Update in user account
-    await UsersCollection.doc(userId).update({
+    const batch = firestore.batch();
+    batch.delete(PodcastsCollection.doc(podcastId));
+    batch.update(UsersCollection.doc(userId), {
       creations: FieldValue.arrayRemove(podcastId),
     });
+    await batch.commit();
 
     return { status: "OK", message: "Your podcast has been removed." };
   } catch (err: any) {
