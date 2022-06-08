@@ -11,7 +11,7 @@ admin.initializeApp({
   storageBucket: "castaway-819d7.appspot.com",
 });
 
-const firestore = getFirestore();
+export const firestore = getFirestore();
 
 const converter = <T>() => ({
   toFirestore: (data: T) => data,

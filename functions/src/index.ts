@@ -8,6 +8,7 @@ import * as functions from "firebase-functions";
 import podcastRouter from "./routes/podcast";
 import uploadRouter from "./routes/upload";
 import authRouter from "./routes/auth";
+import userRouter from "./routes/user";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -66,6 +67,8 @@ app.use("/api/podcasts", podcastRouter);
 app.use("/api/uploads", uploadRouter);
 
 app.use("/api/auth", authRouter);
+
+app.use("/api/users", userRouter);
 
 // Convert to Firebase functions
 exports.app = functions.https.onRequest(app);
