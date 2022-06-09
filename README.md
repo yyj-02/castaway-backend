@@ -121,13 +121,17 @@ As shown in the diagram, Cloud Storage will contain all the files such as audio 
 
 <br>
 
-## Database Design
+## Database Schema
 
-to be continue >>
+![Database Schema Diagram](assets/database_schema.png)
 
 ## User Flow
 
 ![User Flow Diagram](assets/user_flow.png)
+
+## Software Engineering Practices
+
+to be continue >>
 
 ## Backend Documentation
 
