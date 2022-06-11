@@ -26,7 +26,7 @@ function handleSuccess(stream) {
   window.stream = stream; // make variable available to browser console
   audio.srcObject = stream;
 }
-
+s
 function handleError(error) {
   const errorMessage = 'navigator.MediaDevices.getUserMedia error: ' + error.message + ' ' + error.name;
   document.getElementById('errorMsg').innerText = errorMessage;

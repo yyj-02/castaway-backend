@@ -18,32 +18,27 @@ const getAllPodcasts = async () => {
   try {
     const res = await PodcastsCollection.where("public", "==", true).get();
 
-    // Putting the data into an array
     const data: {
+      podcastId: string;
       title: string;
       description: string;
+      artistName: string;
       durationInMinutes: number;
-      genres: Genres;
-      podcastId: string;
+      imgUrl: string;
+      genres: string[];
     }[] = [];
+
+    // Putting the data into an array
     res.forEach(async (doc) => {
-      const {
-        title,
-        description,
-        artistName,
-        durationInMinutes,
-        genres,
-        imgPath,
-      } = doc.data();
-      const imgUrl = await generateV4ReadSignedUrlOneHour(imgPath);
+      const imgUrl = await generateV4ReadSignedUrlOneHour(doc.data().imgPath);
       const podcast = {
         podcastId: doc.id,
-        title,
-        description,
-        artistName,
-        durationInMinutes,
+        title: doc.data().title,
+        description: doc.data().description,
+        artistName: doc.data().artistName,
+        durationInMinutes: doc.data().durationInMinutes,
         imgUrl,
-        genres,
+        genres: doc.data().genres,
       };
       data.push(podcast);
     });

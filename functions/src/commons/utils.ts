@@ -1,5 +1,5 @@
 import { GetSignedUrlConfig } from "@google-cloud/storage";
-import { PodcastsStorage } from "../database/db";
+import { ImagesStorage, PodcastsStorage } from "../database/db";
 
 export const generateV4ReadSignedUrlOneMinute = async (fileName: string) => {
   try {
@@ -32,7 +32,7 @@ export const generateV4ReadSignedUrlOneHour = async (fileName: string) => {
     };
 
     // Get a v4 signed URL for reading the file
-    const [url] = await PodcastsStorage.file(fileName).getSignedUrl(options);
+    const [url] = await ImagesStorage.file(fileName).getSignedUrl(options);
 
     return url;
   } catch (err: any) {

@@ -184,7 +184,7 @@ The process of creating a podcast entails uploading an audio file, followed by a
 
 **Endpoint:**
 ```
-{appUrl}/podcasts/:podcastId/info
+{appUrl}/podcasts
 ```
 
 **Response payload:**
