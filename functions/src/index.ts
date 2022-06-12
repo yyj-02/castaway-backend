@@ -10,9 +10,6 @@ import uploadRouter from "./routes/upload";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 
-// Demo webpage
-import demo from "./demo/main";
-
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //

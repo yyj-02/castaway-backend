@@ -1,10 +1,5 @@
 import { FieldValue } from "firebase-admin/firestore";
-import {
-  FileType,
-  generateV4ReadSignedUrlOneHour,
-  Genres,
-  Podcast,
-} from "../commons";
+import { FileType, generateV4ReadSignedUrlOneHour, Podcast } from "../commons";
 import {
   firestore,
   ImagesStorage,
@@ -18,32 +13,30 @@ const getAllPodcasts = async () => {
   try {
     const res = await PodcastsCollection.where("public", "==", true).get();
 
-    const data: {
-      podcastId: string;
-      title: string;
-      description: string;
-      artistName: string;
-      durationInMinutes: number;
-      imgUrl: string;
-      genres: string[];
-    }[] = [];
+    const data: any[] = [];
 
     // Putting the data into an array
     res.forEach(async (doc) => {
-      const imgUrl = await generateV4ReadSignedUrlOneHour(doc.data().imgPath);
-      const podcast = {
-        podcastId: doc.id,
-        title: doc.data().title,
-        description: doc.data().description,
-        artistName: doc.data().artistName,
-        durationInMinutes: doc.data().durationInMinutes,
-        imgUrl,
-        genres: doc.data().genres,
-      };
-      data.push(podcast);
+      data.push({ podcastId: doc.id, ...doc.data() });
     });
 
-    return data;
+    const podcastsPromises = data.map(async (podcastDoc) => {
+      const imgUrl = await generateV4ReadSignedUrlOneHour(podcastDoc.imgPath);
+
+      return {
+        podcastId: podcastDoc.podcastId,
+        title: podcastDoc.title,
+        description: podcastDoc.description,
+        artistName: podcastDoc.artistName,
+        durationInMinutes: podcastDoc.durationInMinutes,
+        imgUrl,
+        genres: podcastDoc.genres,
+      };
+    });
+
+    const podcasts = await Promise.all(podcastsPromises);
+
+    return podcasts;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }

@@ -6,13 +6,13 @@
     <title>Welcome to Firebase Hosting</title>
 
     <!-- update the version number as needed -->
-    <script defer src="/__/firebase/9.8.3/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.8.3/firebase-app-compat.js"></script>
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/9.8.3/firebase-auth-compat.js"></script>
     <script defer src="/__/firebase/9.8.3/firebase-database-compat.js"></script>
     <script defer src="/__/firebase/9.8.3/firebase-firestore-compat.js"></script>
     <script defer src="/__/firebase/9.8.3/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/9.8.3/firebase-messaging-compat.js"></script>
+    <script src="/__/firebase/9.8.3/firebase-messaging-compat.js"></script>
     <script defer src="/__/firebase/9.8.3/firebase-storage-compat.js"></script>
     <script defer src="/__/firebase/9.8.3/firebase-analytics-compat.js"></script>
     <script defer src="/__/firebase/9.8.3/firebase-remote-config-compat.js"></script>
@@ -21,7 +21,7 @@
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
     -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <script src="/__/firebase/init.js?useEmulator=false"></script>
 
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
@@ -39,22 +39,34 @@
     </style>
   </head>
   <body>
-    <div id="container">
+    <h2>1. Start your Webcam</h2>
+    <div class="videos">
+      <span>
+        <h3>Local Stream</h3>
+        <video id="webcamVideo" autoplay playsinline></video>
+      </span>
+      <span>
+        <h3>Remote Stream</h3>
+        <video id="remoteVideo" autoplay playsinline></video>
+      </span>
 
-      <h1>
-        Audio Broadcast with WebRTC
-      </h1>
 
-      <audio id="gum-local" controls autoplay muted></audio>
-
-      <p class="warning">Warning: if you're not using headphones, pressing play will cause feedback.</p>
-
-      <div>
-          <span id="errorMsg"></span>
-      </div>
     </div>
 
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script src="./js/audio-device.js"></script>
+    <button id="webcamButton">Start webcam</button>
+    <h2>2. Create a new Call</h2>
+    <button id="callButton" disabled>Create Call (offer)</button>
+
+    <h2>3. Join a Call</h2>
+    <p>Answer the call from a different browser window or device</p>
+    
+    <input id="callInput" />
+    <button id="answerButton" disabled>Answer</button>
+
+    <h2>4. Hangup</h2>
+
+    <button id="hangupButton" disabled>Hangup</button>
+
+    <script type="module" src="./js/cloud-messaging.js"></script>
   </body>
 </html>
