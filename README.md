@@ -139,4 +139,4 @@ to be continue >>
 
 ## Frontend Documentation
 
-[go to backend documentation →](https://github.com/yyj-02/castaway-frontend#readme)
+[go to frontend documentation →](https://github.com/yyj-02/castaway-frontend#readme)
