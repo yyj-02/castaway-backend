@@ -21,15 +21,6 @@ const app = initializeApp(firebaseConfig);
 // Initialize Messaging
 const messaging = getMessaging(app);
 
-function requestPermission() {
-  console.log("Requesting permission...");
-  Notification.requestPermission().then((permission) => {
-    if (permission === "granted") {
-      console.log("Notification permission granted.");
-    }
-  });
-}
-
 getToken(messaging, { vapidKey: "BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh3CihrPgotMhQNZOv95ab6DWM-AGRe7kschUhccVk" }).then((currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
@@ -37,11 +28,9 @@ getToken(messaging, { vapidKey: "BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh
   } else {
     // Show permission request UI
     console.log('No registration token available. Request permission to generate one.');
-    requestPermission();
   }
 }).catch((err) => {
   console.log('An error occurred while retrieving token. ', err);
-  // ...
 });
 
 onMessage(messaging, (payload) => {
