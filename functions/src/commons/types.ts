@@ -30,6 +30,7 @@ export interface User {
   userId?: string;
   email: string;
   displayName: string;
+  messagingToken?: string;
   creations: string[];
   favorites: string[];
 }

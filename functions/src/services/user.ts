@@ -1,5 +1,9 @@
 import { FieldValue } from "firebase-admin/firestore";
-import { generateV4ReadSignedUrlOneHour, Genres } from "../commons";
+import {
+  generateV4ReadSignedUrlOneHour,
+  Genres,
+  sendCloudMessage,
+} from "../commons";
 import { firestore, PodcastsCollection, UsersCollection } from "../database/db";
 
 const getProfile = async (userId: string) => {
@@ -168,6 +172,25 @@ const deleteFavorite = async (userId: string, podcastId: string) => {
   }
 };
 
+const registerMessagingToken = async (
+  userId: string,
+  messagingToken: string
+) => {
+  try {
+    await sendCloudMessage(
+      { message: "You have successfully set up notification service." },
+      messagingToken
+    );
+    await UsersCollection.doc(userId).update({
+      messagingToken,
+    });
+
+    return { status: "OK", message: "Your messaging token is registered." };
+  } catch (err: any) {
+    throw { status: err?.status || 500, message: err?.message || err };
+  }
+};
+
 export default {
   getProfile,
   changeDisplayName,
@@ -175,4 +198,5 @@ export default {
   getAllFavorites,
   addFavorite,
   deleteFavorite,
+  registerMessagingToken,
 };

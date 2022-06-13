@@ -56,4 +56,12 @@ router.delete(
   userController.deleteFavorite
 );
 
+router.post(
+  "/messagingToken",
+  UserSchema.RegisterMessagingTokenSchema,
+  requestSchemaValidator,
+  idTokenValidator,
+  userController.registerMessagingToken
+);
+
 export default router;

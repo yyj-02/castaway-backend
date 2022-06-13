@@ -7,7 +7,7 @@ const getProfile = async (req: Request, res: Response) => {
   } = res;
 
   try {
-    const data = userService.getProfile(userId);
+    const data = await userService.getProfile(userId);
     res.json(data);
   } catch (err: any) {
     res
@@ -25,7 +25,10 @@ const changeDisplayName = async (req: Request, res: Response) => {
   } = req;
 
   try {
-    const data = userService.changeDisplayName(userId, updatedDisplayName);
+    const data = await userService.changeDisplayName(
+      userId,
+      updatedDisplayName
+    );
     res.json(data);
   } catch (err: any) {
     res
@@ -40,7 +43,7 @@ const getAllCreations = async (req: Request, res: Response) => {
   } = res;
 
   try {
-    const data = userService.getAllCreations(userId);
+    const data = await userService.getAllCreations(userId);
     res.json(data);
   } catch (err: any) {
     res
@@ -55,7 +58,7 @@ const getAllFavorites = async (req: Request, res: Response) => {
   } = res;
 
   try {
-    const data = userService.getAllFavorites(userId);
+    const data = await userService.getAllFavorites(userId);
     res.json(data);
   } catch (err: any) {
     res
@@ -73,7 +76,7 @@ const addFavorite = async (req: Request, res: Response) => {
   } = req;
 
   try {
-    const data = userService.addFavorite(userId, podcastId);
+    const data = await userService.addFavorite(userId, podcastId);
     res.json(data);
   } catch (err: any) {
     res
@@ -91,7 +94,28 @@ const deleteFavorite = async (req: Request, res: Response) => {
   } = req;
 
   try {
-    const data = userService.deleteFavorite(userId, podcastId);
+    const data = await userService.deleteFavorite(userId, podcastId);
+    res.json(data);
+  } catch (err: any) {
+    res
+      .status(err?.status || 500)
+      .json({ status: "FAILED", data: { error: err?.message || err } });
+  }
+};
+
+const registerMessagingToken = async (req: Request, res: Response) => {
+  const {
+    locals: { userId },
+  } = res;
+  const {
+    body: { messagingToken },
+  } = req;
+
+  try {
+    const data = await userService.registerMessagingToken(
+      userId,
+      messagingToken
+    );
     res.json(data);
   } catch (err: any) {
     res
@@ -107,4 +131,5 @@ export default {
   getAllFavorites,
   addFavorite,
   deleteFavorite,
+  registerMessagingToken,
 };

@@ -631,6 +631,35 @@ An array of podcasts with the following properties:
 
 <br>
 
+## Livestream
+
+Before using the livestream API, user must obtain a messaging token (registration token) from Firebase Cloud Messaging using this [guide](https://firebase.google.com/docs/cloud-messaging) with the [Vapid Key](https://vapidkeys.com/) `BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh3CihrPgotMhQNZOv95ab6DWM-AGRe7kschUhccVk`.
+
+<details>
+<summary><h3 style="display: inline;">Register Messaging Token</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/users/info
+```
+
+**Request payload:**
+| Property       |  Type  | Description                         |
+| -------------- | :----: | :---------------------------------- |
+| idToken        | string | The latest id token                 |
+| messagingToken | string | The assigned FCM registration token |
+
+**Response payload:**
+| Property |  Type  | Description                                     |
+| -------- | :----: | :---------------------------------------------- |
+| status   | string | Should be "OK"                                  |
+| message  | string | Should be "Your messaging token is registered." |
+</details>
+
 ## TODO
 
 - [x] CRUD for podcast
@@ -641,7 +670,7 @@ An array of podcasts with the following properties:
 - [x] Provide image link instead of image id
 - [x] Remove podcast id in GET
 - [x] Add user profile CRUD
-- [ ] Cloud messaging
+- [x] Cloud messaging
 - [ ] WebRTC
 - [ ] Add reset password option
 
