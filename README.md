@@ -125,6 +125,16 @@ As shown in the diagram, Cloud Storage will contain all the files such as audio 
 
 ![Database Schema Diagram](assets/database_schema.png)
 
+<details>
+<summary><h3 style="display: inline;">Design Considerations</h3></summary>
+
+Firestore is used to store the information about the users and podcasts while Cloud Storage is used to store the files.
+
+One different thing in this schema as compared to convention is that the artist name is stored in both podcasts and users. This is the design choice as if the artist name is only stored in the users database, we need two Firestore calls for each podcast, using more of our limited Firestore credit. Since the artist name will have a lot more reads than writes, we have decided to put it in the podcasts database as well.
+</details>
+
+<br>
+
 ## User Flow
 
 ![User Flow Diagram](assets/user_flow.png)
@@ -132,6 +142,11 @@ As shown in the diagram, Cloud Storage will contain all the files such as audio 
 ## Software Engineering Practices
 
 to be continue >>
+- [ ] AGILE
+- [ ] Google Key exposed
+- [ ] Kanban
+- [ ] Server client model
+- [ ] Typescript
 
 ## Backend Documentation
 
