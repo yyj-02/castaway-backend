@@ -475,12 +475,9 @@ To update the upload file or podcast, choose the appropriate route below and pro
 ```
 
 **Request payload:**
-| Property          |  Type  | Description                                            |
-| ----------------- | :----: | :----------------------------------------------------- |
-| email             | string | The user's email                                       |
-| displayName       | string | The user's display name                                |
-| numberOfCreations | number | The amount of creations by the user                    |
-| numberOfFavorites | number | The amount of podcasts in the user's favorites library |
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
 
 **Response payload:**
 | Property |  Type  | Description                                            |
