@@ -1,9 +1,5 @@
 import { FieldValue } from "firebase-admin/firestore";
-import {
-  generateV4ReadSignedUrlOneHour,
-  Genres,
-  sendCloudMessage,
-} from "../commons";
+import { generateV4ReadSignedUrlOneHour, sendCloudMessage } from "../commons";
 import { firestore, PodcastsCollection, UsersCollection } from "../database/db";
 
 const getProfile = async (userId: string) => {
