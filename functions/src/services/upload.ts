@@ -150,7 +150,11 @@ const deleteOneUpload = async (uploadId: string, userId: string) => {
     }
 
     // Delete from cloud storage
-    await PodcastsStorage.file(filepath).delete();
+    if (res.data()?.filetype == FileType.PODCAST) {
+      await PodcastsStorage.file(filepath).delete();
+    } else if (res.data()?.filetype == FileType.IMAGE) {
+      await ImagesStorage.file(filepath).delete();
+    }
 
     // Delete from firestore
     await UploadsCollection.doc(uploadId).delete();

@@ -169,7 +169,13 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
     const path = res.data()?.path;
     const imgPath = res.data()?.imgPath;
     const artistId = res.data()?.artistId;
-    if (path == undefined || imgPath == undefined || artistId == undefined) {
+    const artistName = res.data()?.artistName;
+    if (
+      path == undefined ||
+      imgPath == undefined ||
+      artistId == undefined ||
+      artistName == undefined
+    ) {
       throw { status: 404, message: `Podcast ${podcastId} not found.` };
     }
 
@@ -182,6 +188,7 @@ const updateOnePodcast = async (podcastId: string, updatedPodcast: Podcast) => {
 
     updatedPodcast.path = path;
     updatedPodcast.imgPath = imgPath;
+    updatedPodcast.artistName = artistName;
 
     await PodcastsCollection.doc(podcastId).update(updatedPodcast);
 

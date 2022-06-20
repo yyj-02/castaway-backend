@@ -21,17 +21,42 @@ const app = initializeApp(firebaseConfig);
 // Initialize Messaging
 const messaging = getMessaging(app);
 
-getToken(messaging, { vapidKey: "BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh3CihrPgotMhQNZOv95ab6DWM-AGRe7kschUhccVk" }).then((currentToken) => {
-  if (currentToken) {
-    // Send the token to your server and update the UI if necessary
-    console.log({currentToken})
-  } else {
-    // Show permission request UI
-    console.log('No registration token available. Request permission to generate one.');
+const idToken = document.getElementById("idToken");
+const obtainToken = document.getElementById("generateToken");
+
+obtainToken.onclick = async () => {
+  // console.log(idToken.innerHTML);
+  try {
+    const token = await getToken(messaging, { vapidKey: "BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh3CihrPgotMhQNZOv95ab6DWM-AGRe7kschUhccVk" });
+    
+    onMessage(messaging, (payload) => {
+      console.log("Message received. ", payload);
+    });
+
+    if (token) {
+      // console.log(token);
+      let messagingTokenData = {
+        idToken: idToken.innerHTML,
+        messagingToken: token,
+      }
+      url = "https://us-central1-castaway-819d7.cloudfunctions.net/app/api/users/messagingToken"
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(messagingTokenData),
+      });
+  
+      const resData = await res.json();
+      console.log({...resData});
+    } else {
+      console.log("No registration token available.");
+    }
+  } catch (err) {
+    console.log({err});
   }
-}).catch((err) => {
-  console.log('An error occurred while retrieving token. ', err);
-});
+}
 
 onMessage(messaging, (payload) => {
   console.log("Message received. ", payload);

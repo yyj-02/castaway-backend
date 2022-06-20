@@ -2,6 +2,7 @@
 const loginForm = document.getElementById("login");
 const livestreamPage = document.getElementById("livestream");
 const placeholder = document.getElementById("idToken");
+const generateToken = document.getElementById("generateToken");
 
 livestreamPage.style.display = "none";
 
@@ -31,6 +32,7 @@ loginForm.onsubmit = async (event) => {
 
     loginForm.style.display = "none";
     livestreamPage.style.display = "block";
+    generateToken.click();
   } catch (err) {
     console.log({err});
   }

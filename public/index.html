@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -29,12 +28,13 @@
       <input type="submit" value="Login">
     </form>
 
-    <p id="idToken"></p>
+    <p id="idToken" style="display: none;">Id Token</p>
 
     <div id="livestream">
-      Test
+      <button id="generateToken" style="display: none;">Generate Token</button>
     </div>
     
     <script src="./js/onboard.js"></script>
+    <script type="module" src="./js/cloud-messaging.js"></script>
   </body>
 </html>
