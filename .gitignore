@@ -67,3 +67,8 @@ node_modules/
 
 # firestore emulator persistence
 local_firestore
+
+# compiled folder
+media_server/public
+
+media_server/node_modules
