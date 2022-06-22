@@ -32,9 +32,14 @@
 
     <div id="livestream">
       <button id="generateToken" style="display: none;">Generate Token</button>
+      <audio id="localAudio" controls></audio>
+      <audio id="remoteAudio" controls></audio>
+      <button id="startStream">Start Livestream</button>
+      <button id="stopStream">Stop Livestream</button>
     </div>
     
     <script src="./js/onboard.js"></script>
     <script type="module" src="./js/cloud-messaging.js"></script>
+    <script src="./js/webrtc.js"></script>
   </body>
 </html>
