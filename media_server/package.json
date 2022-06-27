@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node ./src/index.ts",
-    "start": "node ./public/index.js"
+    "start": "node ./public/index.js",
+    "deploy": "docker build -t yyj02/media-server .",
+    "test": "docker run -d -p 8080:8080/tcp -p 8080:8080/udp yyj02/media-server"
   },
   "keywords": [],
   "author": "",

@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import livestreamController from "./controllers/livestream";
+
 // Initializing
 const app = express();
 
@@ -16,6 +18,10 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
+app.post("/consumer", livestreamController.consume);
+
+app.post("/broadcaster", livestreamController.broadcast);
 
 // Opening port
 const PORT = process.env.PORT || 8080;
