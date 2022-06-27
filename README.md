@@ -103,6 +103,11 @@ npm run serve
 npm run deploy
 ```
 
+11. Creating compute engine.
+12. Enabling Google Container Registry.
+13. Uploading media server. (in cloud shell)
+
+
 ## System Design
 
 ![System Design Diagram](assets/system_design.png)

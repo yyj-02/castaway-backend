@@ -9,7 +9,6 @@ import podcastRouter from "./routes/podcast";
 import uploadRouter from "./routes/upload";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
-import livestreamRouter from "./routes/livestream";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -70,8 +69,6 @@ app.use("/api/uploads", uploadRouter);
 app.use("/api/auth", authRouter);
 
 app.use("/api/users", userRouter);
-
-app.use("/api/livestream", livestreamRouter);
 
 // Convert to Firebase functions
 exports.app = functions.https.onRequest(app);
