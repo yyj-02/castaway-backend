@@ -7,7 +7,7 @@ const idTokenValidator = async (
   next: NextFunction
 ) => {
   const {
-    headers: { idToken },
+    body: { idToken },
   } = req;
 
   if (idToken != undefined) {

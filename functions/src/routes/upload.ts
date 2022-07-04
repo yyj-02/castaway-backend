@@ -3,7 +3,7 @@ import uploadController from "../controllers/upload";
 import UploadSchema from "./upload-schema";
 import uploadMiddleware from "../middlewares/upload";
 import requestSchemaValidator from "../middlewares/requestSchemaValidator";
-import idTokenValidator from "../middlewares/idTokenValidator";
+import idTokenValidator from "../middlewares/idTokenValidator-old";
 
 // Initializing
 const router = express.Router();

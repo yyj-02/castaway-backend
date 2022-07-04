@@ -2,7 +2,7 @@ import * as express from "express";
 import userController from "../controllers/user";
 import UserSchema from "./user-schema";
 import requestSchemaValidator from "../middlewares/requestSchemaValidator";
-import idTokenValidator from "../middlewares/idTokenValidator";
+import idTokenValidator from "../middlewares/idTokenValidator-old";
 
 // Initializing
 const router = express.Router();

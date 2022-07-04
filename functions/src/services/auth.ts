@@ -39,7 +39,7 @@ const login = async ({
 
     return data;
   } catch (err: any) {
-    throw { status: err?.status || 500, message: err?.message || err };
+    throw { status: 404, message: "User not found. Sign up now?" };
   }
 };
 

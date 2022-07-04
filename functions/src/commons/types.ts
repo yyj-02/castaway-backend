@@ -49,3 +49,14 @@ export enum FileType {
   IMAGE = "image",
   PODCAST = "podcast",
 }
+
+export interface Livestream {
+  livestreamId?: string;
+  title: string;
+  description: string;
+  artistId: string;
+  artistName: string;
+  streamerConnected: boolean;
+}
+
+export type Livestreams = Livestream[];
