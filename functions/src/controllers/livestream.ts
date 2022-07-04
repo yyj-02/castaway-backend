@@ -38,7 +38,7 @@ const addOneLivestream = async (req: Request, res: Response) => {
 
 const deleteOneLivestream = async (req: Request, res: Response) => {
   const {
-    body: { livestreamId },
+    params: { livestreamId },
   } = req;
   const {
     locals: { userId },
