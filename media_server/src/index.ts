@@ -2,30 +2,42 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import http from "http";
+import { Server } from "socket.io";
 
-import livestreamController from "./controllers/livestream";
+import streamerController from "./controllers/streamer";
+import listenerController from "./controllers/listener";
 
 // Initializing
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: "*" },
+});
 
 // Middleware
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(helmet());
 app.use(morgan("tiny"));
 app.use(express.json());
 
 // Endpoints
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Media server is up and running.");
 });
 
-app.post("/consumer", livestreamController.consume);
+const room = "demo";
+const stream = io.of("/stream");
+stream.on("connection", streamerController);
 
-app.post("/broadcaster", livestreamController.broadcast);
+const listen = io.of("/listen");
+listen.on("connection");
 
 // Opening port
 const PORT = process.env.PORT || 8080;
 
+server.listen(3000);
+
 app.listen(PORT, () => {
-  console.log(`Service is up on port ${PORT}`);
+  console.log(`Service is up on port http://localhost:${PORT}`);
 });
