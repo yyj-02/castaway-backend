@@ -156,6 +156,7 @@ to be continue >>
 ## Backend Documentation
 
 [go to API documentation →](./functions/README.md)
+[go to media server documentation →](./media_server/README.md)
 
 ## Frontend Documentation
 

@@ -630,7 +630,104 @@ An array of podcasts with the following properties:
 
 ## Livestream
 
-Before using the livestream API, user must obtain a messaging token (registration token) from Firebase Cloud Messaging using this [guide](https://firebase.google.com/docs/cloud-messaging) with the [Vapid Key](https://vapidkeys.com/) `BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh3CihrPgotMhQNZOv95ab6DWM-AGRe7kschUhccVk`.
+<details>
+<summary><h3 style="display: inline;">Get all livestreams</h3></summary>
+
+**Method:** GET
+
+**Content-Type:** none
+
+**Endpoint:**
+```
+{appUrl}/livestreams
+```
+
+**Response payload:**
+An array of livestreams with the following properties:
+
+| Property          |  Type  | Description                           |
+| ----------------- | :----: | :------------------------------------ |
+| livestreamId      | string | The id of the livestream              |
+| title             | string | The title of the livestream           |
+| description       | string | The description of the livestream     |
+| artistName        | string | The streamer of the livestream        |
+| streamerConnected | string | The connection status of the streamer |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Access livestream details</h3></summary>
+
+**Method:** GET
+
+**Content-Type:** none
+
+**Endpoint:**
+```
+{appUrl}/livestreams/:livestreamId
+```
+
+**Response payload:**
+| Property          |  Type  | Description                           |
+| ----------------- | :----: | :------------------------------------ |
+| title             | string | The title of the livestream           |
+| description       | string | The description of the livestream     |
+| artistName        | string | The streamer of the livestream        |
+| streamerConnected | string | The connection status of the streamer |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Create livestream</h3></summary>
+
+**Method:** POST
+
+**Content-Type:** application/json
+
+**Endpoint:**
+```
+{appUrl}/livestreams
+```
+**Headers:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Request payload:**
+| Property    |  Type  | Description                       |
+| ----------- | :----: | :-------------------------------- |
+| title       | string | The title of the livestream       |
+| description | string | The description of the livestream |
+
+**Response payload:**
+| Property     |  Type  | Description              |
+| ------------ | :----: | :----------------------- |
+| livestreamId | string | The id of the livestream |
+</details>
+
+<details>
+<summary><h3 style="display: inline;">Delete livestream</h3></summary>
+
+**Method:** DELETE
+
+**Content-Type:** none
+
+**Endpoint:**
+```
+{appUrl}/livestreams/:livestreamId
+```
+**Headers:**
+| Property |  Type  | Description         |
+| -------- | :----: | :------------------ |
+| idToken  | string | The latest id token |
+
+**Response payload:**
+| Property |  Type  | Description                                   |
+| -------- | :----: | :-------------------------------------------- |
+| status   | string | Should be "OK"                                |
+| message  | string | Should be "Your livestream has been removed." |
+</details>
+
+<!-- Depreciated content (to be deleted) -->
+<!-- Before using the livestream API, user must obtain a messaging token (registration token) from Firebase Cloud Messaging using this [guide](https://firebase.google.com/docs/cloud-messaging) with the [Vapid Key](https://vapidkeys.com/) `BKJQoJxKgPSCCw_h_aIj-q0M2QNftW_yAFwajXfxNFJgOYh3CihrPgotMhQNZOv95ab6DWM-AGRe7kschUhccVk`.
 
 <details>
 <summary><h3 style="display: inline;">Register Messaging Token</h3></summary>
@@ -655,7 +752,7 @@ Before using the livestream API, user must obtain a messaging token (registratio
 | -------- | :----: | :---------------------------------------------- |
 | status   | string | Should be "OK"                                  |
 | message  | string | Should be "Your messaging token is registered." |
-</details>
+</details> -->
 
 ## TODO
 
@@ -668,7 +765,8 @@ Before using the livestream API, user must obtain a messaging token (registratio
 - [x] Remove podcast id in GET
 - [x] Add user profile CRUD
 - [x] Cloud messaging
-- [ ] WebRTC
+- [x] Socket io media server
 - [ ] Add reset password option
 
+[go to media server documentation →](../media_server/README.md)
 [← back to main documentation](../README.md)
