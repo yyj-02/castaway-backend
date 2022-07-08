@@ -3,7 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 const credential = require("../../castaway-819d7-92a0eafe1fae.json");
 
-import { Podcast, Upload, User } from "../commons";
+import { Livestream, Podcast, Upload, User } from "../commons";
 
 // Initializing
 admin.initializeApp({
@@ -26,6 +26,7 @@ const db = {
   podcasts: dataPoint<Podcast>("podcasts"),
   uploads: dataPoint<Upload>("uploads"),
   users: dataPoint<User>("users"),
+  livestreams: dataPoint<Livestream>("livestreams"),
 };
 
 // Firestore
@@ -34,6 +35,8 @@ export const PodcastsCollection = db.podcasts;
 export const UploadsCollection = db.uploads;
 
 export const UsersCollection = db.users;
+
+export const LivestreamsCollection = db.livestreams;
 
 // Cloud Storage
 export const PodcastsStorage = getStorage().bucket("castaway-podcasts");

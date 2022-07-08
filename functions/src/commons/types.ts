@@ -30,6 +30,7 @@ export interface User {
   userId?: string;
   email: string;
   displayName: string;
+  messagingToken?: string;
   creations: string[];
   favorites: string[];
 }
@@ -48,3 +49,14 @@ export enum FileType {
   IMAGE = "image",
   PODCAST = "podcast",
 }
+
+export interface Livestream {
+  livestreamId?: string;
+  title: string;
+  description: string;
+  artistId: string;
+  artistName: string;
+  streamerConnected: boolean;
+}
+
+export type Livestreams = Livestream[];

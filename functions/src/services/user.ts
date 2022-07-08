@@ -1,5 +1,5 @@
 import { FieldValue } from "firebase-admin/firestore";
-import { generateV4ReadSignedUrlOneHour, Genres } from "../commons";
+import { generateV4ReadSignedUrlOneHour, sendCloudMessage } from "../commons";
 import { firestore, PodcastsCollection, UsersCollection } from "../database/db";
 
 const getProfile = async (userId: string) => {
@@ -56,17 +56,9 @@ const getAllCreations = async (userId: string) => {
       throw { status: 404, message: "User not found." };
     }
 
-    const data: {
-      podcastId: string;
-      title: string | undefined;
-      description: string | undefined;
-      artistName: string | undefined;
-      durationInMinutes: number | undefined;
-      imgUrl: string;
-      genres: Genres | undefined;
-      public: boolean | undefined;
-    }[] = [];
-    userDoc.data()?.creations.forEach(async (podcastId) => {
+    const creations = userDoc.data()?.creations || [];
+
+    const podcastPromises = creations.map(async (podcastId) => {
       const podcastDoc = await PodcastsCollection.doc(podcastId).get();
       const podcast = {
         podcastId: podcastDoc.id,
@@ -81,10 +73,11 @@ const getAllCreations = async (userId: string) => {
         public: podcastDoc.data()?.public,
       };
 
-      data.push(podcast);
+      return podcast;
     });
 
-    return data;
+    const podcasts = await Promise.all(podcastPromises);
+    return podcasts;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -97,17 +90,9 @@ const getAllFavorites = async (userId: string) => {
       throw { status: 404, message: "User not found." };
     }
 
-    const data: {
-      podcastId: string;
-      title: string | undefined;
-      description: string | undefined;
-      artistName: string | undefined;
-      durationInMinutes: number | undefined;
-      imgUrl: string;
-      genres: Genres | undefined;
-      public: boolean | undefined;
-    }[] = [];
-    userDoc.data()?.favorites.forEach(async (podcastId) => {
+    const favorites = userDoc.data()?.favorites || [];
+
+    const podcastPromises = favorites.map(async (podcastId) => {
       const podcastDoc = await PodcastsCollection.doc(podcastId).get();
       if (
         !podcastDoc.exists ||
@@ -117,6 +102,8 @@ const getAllFavorites = async (userId: string) => {
         await UsersCollection.doc(userId).update({
           favorites: FieldValue.arrayRemove(podcastId),
         });
+
+        return undefined;
       } else {
         const podcast = {
           podcastId: podcastDoc.id,
@@ -131,11 +118,13 @@ const getAllFavorites = async (userId: string) => {
           public: podcastDoc.data()?.public,
         };
 
-        data.push(podcast);
+        return podcast;
       }
     });
 
-    return data;
+    const podcasts = await Promise.all(podcastPromises);
+    podcasts.filter((podcast) => podcast != undefined);
+    return podcasts;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -168,6 +157,25 @@ const deleteFavorite = async (userId: string, podcastId: string) => {
   }
 };
 
+const registerMessagingToken = async (
+  userId: string,
+  messagingToken: string
+) => {
+  try {
+    await sendCloudMessage(
+      { message: "You have successfully set up notification service." },
+      messagingToken
+    );
+    await UsersCollection.doc(userId).update({
+      messagingToken,
+    });
+
+    return { status: "OK", message: "Your messaging token is registered." };
+  } catch (err: any) {
+    throw { status: err?.status || 500, message: err?.message || err };
+  }
+};
+
 export default {
   getProfile,
   changeDisplayName,
@@ -175,4 +183,5 @@ export default {
   getAllFavorites,
   addFavorite,
   deleteFavorite,
+  registerMessagingToken,
 };

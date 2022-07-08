@@ -1,6 +1,6 @@
 import { GetSignedUrlConfig } from "@google-cloud/storage";
 import { ImagesStorage, PodcastsStorage } from "../database/db";
-import { getMessaging, MulticastMessage } from "firebase-admin/messaging";
+import { getMessaging, Message } from "firebase-admin/messaging";
 
 export const generateV4ReadSignedUrlOneMinute = async (fileName: string) => {
   try {
@@ -44,33 +44,21 @@ export const generateV4ReadSignedUrlOneHour = async (fileName: string) => {
   }
 };
 
-export const broadcastMessage = async (
+export const sendCloudMessage = async (
   message: any,
-  registrationTokens: string[]
+  registrationToken: string
 ) => {
-  // const registrationTokens = [
-  //   "YOUR_REGISTRATION_TOKEN_1",
-  //   "YOUR_REGISTRATION_TOKEN_N",
-  // ];
-
-  const details: MulticastMessage = {
-    data: message,
-    tokens: registrationTokens,
-  };
-
   try {
-    const response = await getMessaging().sendMulticast(details);
-    if (response.failureCount > 0) {
-      const failedTokens: string | string[] = [];
-      response.responses.forEach((resp, idx) => {
-        if (!resp.success) {
-          failedTokens.push(registrationTokens[idx]);
-        }
-      });
+    const details: Message = {
+      data: message,
+      token: registrationToken,
+    };
 
-      console.log("List of tokens that caused failures: " + failedTokens);
-    }
+    await getMessaging().send(details);
   } catch (err: any) {
-    throw { status: err?.status || 500, message: err?.message || err };
+    throw {
+      status: err?.status || 500,
+      message: err?.message || "Failed to send cloud message.",
+    };
   }
 };
