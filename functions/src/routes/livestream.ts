@@ -10,6 +10,8 @@ const router = express.Router();
 // Endpoints
 router.get("/", livestreamController.getAllLivestream);
 
+router.get("/:livestreamId", livestreamController.getOneLivestream);
+
 router.post(
   "/",
   LivestreamSchema.PostLivestreamSchema,

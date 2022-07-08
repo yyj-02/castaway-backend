@@ -18,6 +18,21 @@ const getAllLivestream = async () => {
   }
 };
 
+const getOneLivestream = async (livestreamId: string) => {
+  try {
+    const livestreamDoc = await LivestreamsCollection.doc(livestreamId).get();
+    if (!livestreamDoc.exists) {
+      throw { status: 404, message: `Livestream ${livestreamId} not found.` };
+    }
+
+    const livestreamDetails = livestreamDoc.data();
+
+    return livestreamDetails;
+  } catch (err: any) {
+    throw { status: err?.status || 500, message: err?.message || err };
+  }
+};
+
 const addOneLivestream = async (newLivestream: Livestream) => {
   try {
     const artistDoc = await UsersCollection.doc(newLivestream.artistId).get();
@@ -55,6 +70,7 @@ const deleteOneLivestream = async (livestreamId: string, userId: string) => {
 
 export default {
   getAllLivestream,
+  getOneLivestream,
   addOneLivestream,
   deleteOneLivestream,
 };

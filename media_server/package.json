@@ -6,14 +6,18 @@
   "scripts": {
     "dev": "nodemon ./src/index.ts",
     "build": "tsc",
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "deploy": "docker compose build && docker compose up"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "firebase-admin": "^11.0.0",
     "helmet": "^5.1.0",
     "morgan": "^1.10.0",
     "socket.io": "^4.5.1"

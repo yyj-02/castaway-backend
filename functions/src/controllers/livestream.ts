@@ -13,6 +13,21 @@ const getAllLivestream = async (req: Request, res: Response) => {
   }
 };
 
+const getOneLivestream = async (req: Request, res: Response) => {
+  const {
+    params: { livestreamId },
+  } = req;
+
+  try {
+    const data = await livestreamService.getOneLivestream(livestreamId);
+    res.json(data);
+  } catch (err: any) {
+    res
+      .status(err?.status || 500)
+      .json({ status: "FAILED", data: { error: err?.message || err } });
+  }
+};
+
 const addOneLivestream = async (req: Request, res: Response) => {
   const { body } = req;
   const {
@@ -59,6 +74,7 @@ const deleteOneLivestream = async (req: Request, res: Response) => {
 
 export default {
   getAllLivestream,
+  getOneLivestream,
   addOneLivestream,
   deleteOneLivestream,
 };
