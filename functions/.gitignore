@@ -12,3 +12,5 @@ node_modules/
 castaway-819d7-92a0eafe1fae.json
 
 .env
+
+lib
