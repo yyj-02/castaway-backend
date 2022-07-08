@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Socket } from "socket.io";
 import { livestreamsCollection } from "../database/db";
+import listenerService from "../services/listener";
 
 const listenerController = async (socket: Socket) => {
   try {
@@ -59,14 +60,9 @@ const listenerController = async (socket: Socket) => {
       `User ${userId} connected as listener to livestream ${livestreamId}.`
     );
 
-    socket.on("disconnect", async (reason) => {
-      try {
-        console.log(
-          `User ${userId} disconnected as listener from livestream ${livestreamId} due to ${reason}`
-        );
-      } catch (err) {
-        console.log({ err });
-      }
+    // Event listeners
+    socket.on("disconnect", (reason) => {
+      listenerService.disconnect(reason, livestreamId, userId);
     });
   } catch (err) {
     console.log({ err });

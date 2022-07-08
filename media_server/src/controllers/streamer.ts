@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Socket } from "socket.io";
-import { listener } from "..";
 import { livestreamsCollection } from "../database/db";
+import streamerService from "../services/streamer";
 
 const streamerController = async (socket: Socket) => {
   try {
@@ -61,20 +61,14 @@ const streamerController = async (socket: Socket) => {
       `User ${userId} connected as streamer to livestream ${livestreamId}.`
     );
 
+    // Event listeners
     socket.on("upload", (audioBlob) => {
-      socket.emit("success", `Packet received from user ${userId}`);
-      listener.to(livestreamId).emit("audio", audioBlob);
+      streamerService.upload(audioBlob, socket, livestreamId, userId);
     });
 
     socket.on("disconnect", async (reason) => {
       try {
-        // Update the status of the livestream room
-        await livestreamsCollection
-          .doc(livestreamId)
-          .update({ streamerConnected: false });
-        console.log(
-          `User ${userId} disconnected as streamer from livestream ${livestreamId} due to ${reason}`
-        );
+        await streamerService.disconnect(reason, livestreamId, userId);
       } catch (err) {
         console.log({ err });
       }
