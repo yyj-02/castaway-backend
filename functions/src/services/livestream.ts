@@ -12,7 +12,19 @@ const getAllLivestream = async () => {
       data.push({ livestreamId: doc.id, ...doc.data() });
     });
 
-    return data;
+    const livestreamsPromises = data.map(async (livestreamDoc) => {
+      return {
+        livestreamId: livestreamDoc.livestreamId,
+        title: livestreamDoc.title,
+        description: livestreamDoc.description,
+        artistName: livestreamDoc.artistName,
+        streamerConnected: livestreamDoc.streamerConnected,
+      };
+    });
+
+    const livestreams = await Promise.all(livestreamsPromises);
+
+    return livestreams;
   } catch (err: any) {
     throw { status: err?.status || 500, message: err?.message || err };
   }
@@ -25,7 +37,12 @@ const getOneLivestream = async (livestreamId: string) => {
       throw { status: 404, message: `Livestream ${livestreamId} not found.` };
     }
 
-    const livestreamDetails = livestreamDoc.data();
+    const livestreamDetails = {
+      title: livestreamDoc.data()?.title,
+      description: livestreamDoc.data()?.description,
+      artistName: livestreamDoc.data()?.artistName,
+      streamerConnected: livestreamDoc.data()?.streamerConnected,
+    };
 
     return livestreamDetails;
   } catch (err: any) {
