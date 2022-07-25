@@ -769,4 +769,5 @@ An array of livestreams with the following properties:
 - [ ] Add reset password option
 
 [go to media server documentation →](../media_server/README.md)
+
 [← back to main documentation](../README.md)
