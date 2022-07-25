@@ -34,7 +34,7 @@ export const listener = io.of("/listener");
 listener.on("connection", listenerController);
 
 // Opening ports
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Service is up on port http://localhost:${PORT}`);
 });

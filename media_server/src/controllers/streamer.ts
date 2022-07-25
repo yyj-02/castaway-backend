@@ -33,8 +33,7 @@ const streamerController = async (socket: Socket) => {
     // Check if user is authorized
     const livestreamDoc = await livestreamsCollection.doc(livestreamId).get();
     if (
-      livestreamDoc.data()?.artistId !== userId ||
-      livestreamDoc.data()?.streamerConnected !== false
+      livestreamDoc.data()?.artistId !== userId
     ) {
       socket.emit(
         "error",
@@ -63,6 +62,7 @@ const streamerController = async (socket: Socket) => {
 
     // Event listeners
     socket.on("upload", (audioBlob) => {
+      console.log("upload service");
       streamerService.upload(audioBlob, socket, livestreamId, userId);
     });
 

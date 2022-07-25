@@ -9,6 +9,7 @@ const upload = (
   userId: string
 ) => {
   socket.emit("success", `Packet received from user ${userId}`);
+  console.log("This shit works");
   listener.to(livestreamId).emit("audio", audioBlob);
 };
 
