@@ -48,11 +48,11 @@ const signup = async (req: Request, res: Response) => {
 
 const deleteAccount = async (req: Request, res: Response) => {
   const {
-    params: { userId },
+    params: { idToken },
   } = req;
 
   try {
-    const data = await authService.deleteAccount(userId);
+    const data = await authService.deleteAccount(idToken);
     res.json(data);
   } catch (err: any) {
     res

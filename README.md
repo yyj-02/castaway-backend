@@ -19,6 +19,10 @@
 
 </div>
 
+## What's New
+
+Users can now livestream through our app which is accomplished through Socket.io and a Google Compute Engine as a backend media server. The media server is a Selective Forwarding Unit that accepts audio from livestreamers and broadcasts them to the listeners in the respective rooms. We have also updated our UI to look more sleek and pleasing to the eye, mainly to match more to the look in our mockup design.
+
 ## Getting Started
 
 Castaway is a podcast app that serves contents from your favorite content creators on iPhone and Android. This project is written in Express and Firebase for the backend and Flutter for the frontend.
@@ -173,15 +177,6 @@ One different thing in this schema as compared to convention is that the artist 
 ## User Flow
 
 ![User Flow Diagram](assets/user_flow.png)
-
-## Software Engineering Practices
-
-to be continue >>
-- [ ] AGILE
-- [ ] Google Key exposed
-- [ ] Kanban
-- [ ] Server client model
-- [ ] Typescript
 
 ## Backend Documentation
 

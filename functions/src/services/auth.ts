@@ -110,11 +110,11 @@ const signup = async ({
   }
 };
 
-const deleteAccount = async (userId: string) => {
+const deleteAccount = async (idToken: string) => {
   try {
     await axios.post(
       `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${process.env.IDENTITY_SERVER_API_KEY}`,
-      { idToken: userId }
+      { idToken: idToken }
     );
 
     return {

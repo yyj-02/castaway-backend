@@ -28,6 +28,6 @@ router.post(
   authController.signup
 );
 
-router.delete("/:userId", authController.deleteAccount);
+router.delete("/:idToken", authController.deleteAccount);
 
 export default router;
